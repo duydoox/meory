@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "464657070252",
+    "project_id": "meory-20fde",
+    "storage_bucket": "meory-20fde.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:464657070252:android:e2cb10f11332a06b598709",
+        "android_client_info": {
+          "package_name": "com.duzy.meory"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTnm1fVvhx5RXLrTmGvm0EfV-2O7tk2iA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
