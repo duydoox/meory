@@ -41,7 +41,9 @@ class AppCubit extends Cubit<AppState> with SuperAppConn {
     }
   }
 
-  void changeUser(User? user) {
+  Future<void> changeUser(User? user) async {
+    await AppSP.remove(AppSP.userId);
+    await AppSP.set(AppSP.userId, user?.uid);
     emit(state.copyWith(firebaseUser: user));
   }
 

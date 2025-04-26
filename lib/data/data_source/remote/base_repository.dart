@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:core/core.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import 'error_handler.dart';
@@ -12,6 +14,14 @@ class BaseRepository extends AppBaseRepo {
   Future<String> get accessToken async {
     final tokenData = await AppSecureStorage.getToken();
     return tokenData?.accessToken ?? '';
+  }
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth fireAuth = FirebaseAuth.instance;
+
+  Future<String> get userId async {
+    var userId = await AppSP.get(AppSP.userId);
+    return userId;
   }
 
   @override

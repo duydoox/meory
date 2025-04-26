@@ -4,6 +4,7 @@ class AppSP {
   static const String environment = 'environment';
   static const String languageLocale = 'languageLocale';
   static const String hasRunBefore = 'hasRunBefore';
+  static const String userId = 'userId';
 
   static Future<bool> set(key, value) async {
     SharedPreferences pref = getIt.get<SharedPreferences>();

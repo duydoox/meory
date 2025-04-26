@@ -40,4 +40,10 @@ class AppUtils {
       return '';
     }
   }
+
+  static Map<String, dynamic> removeNullValues(Map<String, dynamic> original) {
+    return Map.fromEntries(
+      original.entries.where((entry) => entry.value != null),
+    );
+  }
 }

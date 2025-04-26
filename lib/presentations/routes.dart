@@ -8,6 +8,8 @@ import 'package:meory/presentations/modules/auth_service/sign_in/sign_in_screen.
 import 'package:meory/presentations/modules/auth_service/sign_up/sign_up_screen.dart';
 import 'package:meory/presentations/modules/auth_service/sign_up_completed/sign_up_completed_screen.dart';
 import 'package:meory/presentations/modules/auth_service/sign_up_with_email/sign_up_with_email_screen.dart';
+import 'package:meory/presentations/modules/entry_service/create_entry/create_entry_screen.dart';
+import 'package:meory/presentations/modules/entry_service/entries/entries_screen.dart';
 import 'package:meory/presentations/modules/home/home_screen.dart';
 import 'package:meory/presentations/modules/splash/splash_screen.dart';
 
@@ -23,6 +25,10 @@ enum Routes {
   signUpWithEmail('/sign_up_with_email'),
   changePassword('/change_password'),
   otp('/otp'),
+
+  //entry
+  entries('/entries'),
+  createEntry('/createEntry'),
   ;
 
   final String path;
@@ -92,6 +98,22 @@ final class _RouteConfig {
       path: Routes.home.path,
       pageBuilder: (context, state) => getPage(
         page: const HomeScreen(),
+        state: state,
+      ),
+    ),
+
+    //entry
+    GoRoute(
+      path: Routes.entries.path,
+      pageBuilder: (context, state) => getPage(
+        page: const EntriesScreen(),
+        state: state,
+      ),
+    ),
+    GoRoute(
+      path: Routes.createEntry.path,
+      pageBuilder: (context, state) => getPage(
+        page: const CreateEntryScreen(),
         state: state,
       ),
     ),
