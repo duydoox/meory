@@ -1,5 +1,5 @@
 import 'package:core/core.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meory/app/app_cubit.dart';
@@ -33,18 +33,16 @@ class HomeCubit extends CoreCubit<HomeState> {
                   onTap: () {},
                 ),
                 Divider(color: theme.colors.divider, height: 1),
-                if (kDebugMode) ...[
-                  Divider(color: theme.colors.divider, height: 1),
-                  ListTile(
-                    titleAlignment: ListTileTitleAlignment.center,
-                    title: Text(
-                      '${tr.logOut} (debug)',
-                      textAlign: TextAlign.center,
-                      style: AppTextStyle.s16w600.withColor(theme.colors.red),
-                    ),
-                    onTap: onTapLogout,
+                Divider(color: theme.colors.divider, height: 1),
+                ListTile(
+                  titleAlignment: ListTileTitleAlignment.center,
+                  title: Text(
+                    tr.logOut,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.s16w600.withColor(theme.colors.red),
                   ),
-                ],
+                  onTap: onTapLogout,
+                ),
                 PrimaryButton(
                   title: tr.close,
                   onTap: () {
@@ -97,7 +95,6 @@ class HomeCubit extends CoreCubit<HomeState> {
   }
 
   onTapLogout() {
-    AppSecureStorage.resetToken();
-    AppNavigator.go(Routes.signIn);
+    FirebaseAuth.instance.signOut().then((value) => AppNavigator.go(Routes.auth));
   }
 }

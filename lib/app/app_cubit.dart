@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,7 +14,7 @@ class AppCubit extends Cubit<AppState> with SuperAppConn {
       emit(state.copyWith(locale: Locale(languageLocal)));
       onChangeLanguage(Locale(languageLocal));
     } else {
-      onChangeLanguage(LanguageType.korea.locale);
+      onChangeLanguage(LanguageType.english.locale);
     }
   }
 
@@ -38,6 +39,10 @@ class AppCubit extends Cubit<AppState> with SuperAppConn {
         theme: const AppTheme(AppThemeMode.light),
       ));
     }
+  }
+
+  void changeUser(User? user) {
+    emit(state.copyWith(firebaseUser: user));
   }
 
   // void configLoading() {

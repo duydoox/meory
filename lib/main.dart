@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,10 @@ class _AppMobileState extends State<AppMobile> {
       appCubit.init(context);
       // appCubit.configLoading();
     });
+    FirebaseAuth.instance.authStateChanges().listen((firebaseUser) {
+      AppCubit appCubit = context.read<AppCubit>();
+      appCubit.changeUser(firebaseUser);
+    });
     super.initState();
   }
 
@@ -60,7 +65,8 @@ class _AppMobileState extends State<AppMobile> {
     return ScreenUtilInit(
       designSize: const Size(437, 972), // Design size of Redmi Note 12 Turbo
       child: BlocBuilder<AppCubit, AppState>(
-        buildWhen: (previous, current) => previous.locale != current.locale,
+        buildWhen: (previous, current) =>
+            previous.locale != current.locale || previous.firebaseUser != current.firebaseUser,
         builder: (context, state) {
           final colors = context.watch<AppCubit>().state.theme.colors;
 
@@ -76,7 +82,9 @@ class _AppMobileState extends State<AppMobile> {
             supportedLocales: AppLocalizations.supportedLocales,
             builder: (context, child) => MediaQuery(
               data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-              child: EasyLoading.init()(context, UniApp(child: child!)),
+              child: UniApp(
+                child: EasyLoading.init()(context, child!),
+              ),
             ),
             locale: state.locale,
             routerConfig: AppNavigator.router,

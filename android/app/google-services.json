@@ -12,7 +12,12 @@
           "package_name": "com.duzy.meory"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "464657070252-7dtnehgg74ccg36qparmr386uhscfkfp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBTnm1fVvhx5RXLrTmGvm0EfV-2O7tk2iA"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "464657070252-7dtnehgg74ccg36qparmr386uhscfkfp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "464657070252-fibsuv3tiv4hpetisdp74b4iq927ei30.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.duzy.meory"
+              }
+            }
+          ]
         }
       }
     }

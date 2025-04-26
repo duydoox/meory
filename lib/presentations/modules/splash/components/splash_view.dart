@@ -11,16 +11,17 @@ class SplashView extends BaseWidget<SplashCubit, SplashState> {
     //   context.read<SplashCubit>().init();
     // });
 
-    Future.delayed(
-        const Duration(seconds: 2),
-        () => AppSecureStorage.getToken().then((value) {
-              AppNavigator.isLoadedSplash = true;
-              if (value?.accessToken != null && value!.accessToken!.isNotEmpty) {
-                AppNavigator.go(Routes.home);
-              } else {
-                AppNavigator.go(Routes.signIn);
-              }
-            }));
+    Future.delayed(const Duration(seconds: 2), () {
+      AppNavigator.isLoadedSplash = true;
+
+      AppCubit appCubit = context.read<AppCubit>();
+      if (appCubit.state.firebaseUser?.emailVerified == true) {
+        AppNavigator.go(Routes.home);
+      } else {
+        AppNavigator.isLoadedSplash = true;
+        AppNavigator.go(Routes.auth);
+      }
+    });
   }
 
   @override
