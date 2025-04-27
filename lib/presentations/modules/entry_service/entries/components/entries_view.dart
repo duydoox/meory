@@ -41,7 +41,8 @@ class EntriesView extends BaseWidget<EntriesCubit, EntriesState> {
                   final entry = cubit.state.entries[index];
                   return ListTile(
                     title: Text(entry.headword ?? ''),
-                    subtitle: Text('${entry.definition} ${entry.partsOfSpeech?.name}'),
+                    subtitle: Text(
+                        '${entry.definition} - Tỉ lệ: ${entry.numberOfSuccess}/${entry.numberOfPlayed} - Điểm: ${entry.score}'),
                   );
                 },
               ),

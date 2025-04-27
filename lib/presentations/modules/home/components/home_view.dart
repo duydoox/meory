@@ -62,7 +62,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
                     PrimaryButton(
                       title: 'Start quiz',
                       onTap: () {
-                        //
+                        AppNavigator.push(Routes.play);
                       },
                     ),
                   ],

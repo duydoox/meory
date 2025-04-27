@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
 
@@ -19,8 +21,38 @@ class PlayService {
     );
   }
 
+  Future<List<EntryModel>> getRandomEntry(
+    List<EntryModel> entries, {
+    EntryModel? defaultEntry,
+    int take = 4,
+  }) async {
+    final random = Random();
+    final picked = <EntryModel>{};
+
+    if (defaultEntry != null) {
+      picked.add(defaultEntry);
+    }
+
+    while (picked.length < take && picked.length < entries.length - 1) {
+      final entry = entries[random.nextInt(entries.length)];
+      final existed = picked.any((e) => e.id == entry.id);
+      if (entry.id != defaultEntry?.id && !existed) {
+        picked.add(entry);
+      }
+    }
+
+    if (picked.length < take) {
+      picked.addAll(List.generate(
+        take - picked.length,
+        (index) => EntryModel(),
+      ));
+    }
+
+    return picked.toList()..shuffle(random);
+  }
+
   /// lấy top 50 entry cần luyện nhất
-  Future<List<EntryModel>> getTopImportantEntries(List<EntryModel> entries, [int take = 30]) async {
+  List<EntryModel> getTopImportantEntries(List<EntryModel> entries, {int take = 30}) {
     entries.sort((a, b) {
       final aScore = _calculateImportanceScore(a);
       final bScore = _calculateImportanceScore(b);
