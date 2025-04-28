@@ -3,33 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meory/app/app_cubit.dart';
 
-class InputDropdown extends StatefulWidget {
-  final List<String> values;
-  final TextEditingController? controller;
-  final String? hintText;
-  final String? initialValue;
-  final bool enabled;
-  const InputDropdown(
-      {super.key,
-      required this.values,
-      this.controller,
-      this.initialValue,
-      this.hintText,
-      this.enabled = true});
-
-  @override
-  State<InputDropdown> createState() => _InputDropdownState();
+class InputController<T> extends ValueNotifier<T?> {
+  InputController(T? value) : super(value);
 }
 
-class _InputDropdownState extends State<InputDropdown> {
-  late final TextEditingController _controller;
+class InputDropdown<T> extends StatefulWidget {
+  final List<T> values;
+  final InputController<T?>? controller;
+  final String? hintText;
+  final T? initialValue;
+  final String Function(T item)? display;
+  final bool enabled;
+  const InputDropdown({
+    super.key,
+    required this.values,
+    this.controller,
+    this.initialValue,
+    this.hintText,
+    this.enabled = true,
+    this.display,
+  });
+
+  @override
+  State<InputDropdown<T>> createState() => _InputDropdownState<T>();
+}
+
+class _InputDropdownState<T> extends State<InputDropdown<T>> {
+  late final ValueNotifier<T?> _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = widget.controller ?? TextEditingController();
-    if (_controller.text.isEmpty) {
-      _controller.text = widget.initialValue ?? '';
+    _controller = widget.controller ?? ValueNotifier<T?>(null);
+    if (widget.initialValue != null) {
+      _controller.value = widget.initialValue;
     }
     _controller.addListener(() {
       setState(() {});
@@ -38,7 +45,7 @@ class _InputDropdownState extends State<InputDropdown> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    // _controller.dispose();
     super.dispose();
   }
 
@@ -48,7 +55,7 @@ class _InputDropdownState extends State<InputDropdown> {
     return DropdownButtonHideUnderline(
       child: IgnorePointer(
         ignoring: !widget.enabled,
-        child: DropdownButton2<String>(
+        child: DropdownButton2<T>(
           isExpanded: true,
           hint: Row(
             children: [
@@ -65,10 +72,10 @@ class _InputDropdownState extends State<InputDropdown> {
             ],
           ),
           items: widget.values
-              .map((String item) => DropdownMenuItem<String>(
+              .map((T item) => DropdownMenuItem<T>(
                     value: item,
                     child: Text(
-                      item,
+                      widget.display != null ? widget.display!(item) : item.toString(),
                       style: TextStyle(
                         fontSize: 14,
                         color: theme.colors.blackText,
@@ -77,9 +84,9 @@ class _InputDropdownState extends State<InputDropdown> {
                     ),
                   ))
               .toList(),
-          value: widget.values.contains(_controller.text) ? _controller.text : null,
-          onChanged: (String? value) {
-            _controller.text = value ?? '';
+          value: widget.values.contains(_controller.value) ? _controller.value : null,
+          onChanged: (T? value) {
+            _controller.value = value;
           },
           buttonStyleData: ButtonStyleData(
             height: 48,

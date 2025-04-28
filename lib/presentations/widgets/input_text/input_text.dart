@@ -9,7 +9,7 @@ class InputText extends StatefulWidget {
   final TextEditingController? controller;
   final TextEditingController? countryController;
   final String? hintText;
-  final String? content;
+  final String? initValue;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final Widget? suffixIconChangeOnTap;
@@ -28,7 +28,7 @@ class InputText extends StatefulWidget {
   const InputText({
     super.key,
     this.hintText,
-    this.content,
+    this.initValue,
     this.prefixIcon,
     this.suffixIcon,
     this.suffixIconChangeOnTap,
@@ -66,7 +66,9 @@ class _InputTextState extends State<InputText> {
     _textEditingController = widget.controller ?? TextEditingController();
     widget.formInputText?._registerValidate(_registerValidate);
     obscureText = widget.isPassword ?? false;
-    _textEditingController.text = widget.content ?? '';
+    if (widget.initValue != null) {
+      _textEditingController.text = widget.initValue ?? '';
+    }
     _textEditingController.addListener(() {
       widget.onChangedText?.call(_textEditingController.text);
     });
@@ -93,17 +95,9 @@ class _InputTextState extends State<InputText> {
 
   @override
   void dispose() {
-    _textEditingController.dispose();
+    // _textEditingController.dispose();
     _focusNode.dispose();
     super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(covariant InputText oldWidget) {
-    if (widget.content != oldWidget.content) {
-      _textEditingController.text = widget.content ?? '';
-    }
-    super.didUpdateWidget(oldWidget);
   }
 
   @override

@@ -16,6 +16,8 @@ class AppColors {
   final Color hintText;
   final Color brown;
   final Color greenEnable;
+  final Color orange;
+  final Color yellow;
 
   /// Text ---
   final Color whiteText;
@@ -61,6 +63,8 @@ class AppColors {
     required this.hintText,
     required this.brown,
     required this.greenEnable,
+    required this.orange,
+    required this.yellow,
   });
 
   factory AppColors.light() {
@@ -89,6 +93,8 @@ class AppColors {
       hintText: Color(0xff888888),
       brown: Color(0xffB7A1A1),
       greenEnable: Color(0xff0CE39D),
+      orange: Color(0xffFFA500),
+      yellow: Color(0xffF7F800),
     );
   }
   factory AppColors.dark() {
@@ -117,6 +123,8 @@ class AppColors {
       hintText: Color(0xff888888),
       brown: Color(0xffB7A1A1),
       greenEnable: Color(0xff0CE39D),
+      orange: Color(0xffFFA500),
+      yellow: Color(0xffF7F800),
     );
   }
 }

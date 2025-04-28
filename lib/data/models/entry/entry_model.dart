@@ -8,6 +8,9 @@ class EntryModel {
   final PartsOfSpeechE? partsOfSpeech;
   final String? pronunciation;
   final String? category;
+  final String? description;
+  final String? note;
+  final String? topic;
   final Timestamp? createdAt;
   final String? userId;
   final int? numberOfPlayed;
@@ -23,6 +26,9 @@ class EntryModel {
     this.partsOfSpeech,
     this.pronunciation,
     this.category,
+    this.description,
+    this.note,
+    this.topic,
     this.userId,
     this.numberOfPlayed = 0,
     this.numberOfSuccess = 0,
@@ -41,6 +47,9 @@ class EntryModel {
           json['partsOfSpeech'] != null ? PartsOfSpeechE.values[json['partsOfSpeech']] : null,
       pronunciation: json['pronunciation'],
       category: json['category'],
+      description: json['description'],
+      note: json['note'],
+      topic: json['topic'],
       createdAt: json['createdAt'],
       userId: json['userId'],
       numberOfPlayed: json['numberOfPlayed'],
@@ -59,6 +68,9 @@ class EntryModel {
       'partsOfSpeech': partsOfSpeech?.index,
       'pronunciation': pronunciation,
       'category': category,
+      'description': description,
+      'note': note,
+      'topic': topic,
       'createdAt': createdAt,
       'userId': userId,
       'numberOfPlayed': numberOfPlayed,
@@ -73,9 +85,12 @@ class EntryModel {
     return AppUtils.removeNullValues({
       'headword': headword,
       'definition': definition,
-      'partsOfSpeech': partsOfSpeech,
+      'partsOfSpeech': partsOfSpeech?.index,
       'pronunciation': pronunciation,
       'category': category,
+      'description': description,
+      'note': note,
+      'topic': topic,
       'createdAt': createdAt,
       'userId': userId,
       'numberOfPlayed': numberOfPlayed,
@@ -93,6 +108,9 @@ class EntryModel {
     PartsOfSpeechE? partsOfSpeech,
     String? pronunciation,
     String? category,
+    String? description,
+    String? note,
+    String? topic,
     Timestamp? createdAt,
     String? userId,
     int? numberOfPlayed,
@@ -108,6 +126,9 @@ class EntryModel {
       partsOfSpeech: partsOfSpeech ?? this.partsOfSpeech,
       pronunciation: pronunciation ?? this.pronunciation,
       category: category ?? this.category,
+      description: description ?? this.description,
+      note: note ?? this.note,
+      topic: topic ?? this.topic,
       createdAt: createdAt ?? this.createdAt,
       userId: userId ?? this.userId,
       numberOfPlayed: numberOfPlayed ?? this.numberOfPlayed,
@@ -120,12 +141,15 @@ class EntryModel {
 }
 
 enum PartsOfSpeechE {
-  noun,
-  verb,
-  adjective,
-  adverb,
-  preposition,
-  conjunction,
-  pronoun,
-  interjection,
+  noun('N'),
+  verb('V'),
+  adjective('A'),
+  adverb('Adv'),
+  preposition('P'),
+  conjunction('C'),
+  pronoun('Pro'),
+  interjection('I');
+
+  const PartsOfSpeechE(this.short);
+  final String short;
 }

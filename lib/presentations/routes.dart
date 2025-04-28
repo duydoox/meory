@@ -10,6 +10,7 @@ import 'package:meory/presentations/modules/auth_service/sign_up_completed/sign_
 import 'package:meory/presentations/modules/auth_service/sign_up_with_email/sign_up_with_email_screen.dart';
 import 'package:meory/presentations/modules/entry_service/create_entry/create_entry_screen.dart';
 import 'package:meory/presentations/modules/entry_service/entries/entries_screen.dart';
+import 'package:meory/presentations/modules/entry_service/entry_detail/entry_detail_screen.dart';
 import 'package:meory/presentations/modules/home/home_screen.dart';
 import 'package:meory/presentations/modules/play_service/play/play_screen.dart';
 import 'package:meory/presentations/modules/splash/splash_screen.dart';
@@ -30,6 +31,7 @@ enum Routes {
   //entry
   entries('/entries'),
   createEntry('/createEntry'),
+  entryDetail('/entryDetail'),
 
   //play
   play('/play'),
@@ -118,6 +120,13 @@ final class _RouteConfig {
       path: Routes.createEntry.path,
       pageBuilder: (context, state) => getPage(
         page: const CreateEntryScreen(),
+        state: state,
+      ),
+    ),
+    GoRoute(
+      path: Routes.entryDetail.path,
+      pageBuilder: (context, state) => getPage(
+        page: const EntryDetailScreen(),
         state: state,
       ),
     ),

@@ -7,7 +7,7 @@ class PlayService {
   final int scoreIncreaseOnCorrect = 5;
   final int scoreDecreaseOnWrong = 20;
   final int scoreMax = 100;
-  final int scoreMin = 0;
+  final int scoreMin = -100;
 
   updateEntryResult(EntryModel entry, bool result) {
     return entry.copyWith(
@@ -28,13 +28,25 @@ class PlayService {
   }) async {
     final random = Random();
     final picked = <EntryModel>{};
+    int count = 200;
+
+    final noneEntries = List.generate(
+        max(take - entries.length, 0),
+        (index) => EntryModel(
+              id: index.toString(),
+              headword: 'none ${index + 1}',
+              definition: ' ' * index,
+            ));
+
+    final finalEntries = [...entries, ...noneEntries];
 
     if (defaultEntry != null) {
       picked.add(defaultEntry);
     }
 
-    while (picked.length < take && picked.length < entries.length - 1) {
-      final entry = entries[random.nextInt(entries.length)];
+    while (picked.length < take && picked.length < finalEntries.length - 1 && count > 0) {
+      count--;
+      final entry = finalEntries[random.nextInt(finalEntries.length)];
       final existed = picked.any((e) => e.id == entry.id);
       if (entry.id != defaultEntry?.id && !existed) {
         picked.add(entry);
@@ -54,15 +66,15 @@ class PlayService {
   /// lấy top 50 entry cần luyện nhất
   List<EntryModel> getTopImportantEntries(List<EntryModel> entries, {int take = 30}) {
     entries.sort((a, b) {
-      final aScore = _calculateImportanceScore(a);
-      final bScore = _calculateImportanceScore(b);
+      final aScore = calculateImportanceScore(a);
+      final bScore = calculateImportanceScore(b);
       return bScore.compareTo(aScore);
     });
 
     return entries.take(take).toList();
   }
 
-  double _calculateImportanceScore(EntryModel entry) {
+  double calculateImportanceScore(EntryModel entry) {
     final now = DateTime.now();
     final lastPlayed =
         entry.lastPlayedTime?.toDate() ?? DateTime.now().add(const Duration(days: -100));

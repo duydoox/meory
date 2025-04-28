@@ -1,8 +1,8 @@
-import 'package:meory/app/app_cubit.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:meory/app/app_cubit.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class InputDatetime extends StatefulWidget {
@@ -30,7 +30,9 @@ class _InputDatetimeState extends State<InputDatetime> {
   void initState() {
     super.initState();
     _controller = widget.controller ?? TextEditingController();
-    _controller.text = widget.initialValue ?? '';
+    if (widget.initialValue != null) {
+      _controller.text = widget.initialValue!;
+    }
     convertDate();
     _controller.addListener(() {
       convertDate();

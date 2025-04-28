@@ -39,7 +39,7 @@ class _SelectState extends State<Select> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    // _controller.dispose();
     super.dispose();
   }
 

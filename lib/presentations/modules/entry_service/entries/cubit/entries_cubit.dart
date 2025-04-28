@@ -29,6 +29,13 @@ class EntriesCubit extends CoreCubit<EntriesState> {
     );
   }
 
+  onTapItem(EntryModel entry) {
+    AppNavigator.push(Routes.entryDetail, {
+      'entry': entry,
+      'callback': getEntries,
+    });
+  }
+
   onTapAdd() {
     AppNavigator.push(Routes.createEntry, {
       'callback': getEntries,

@@ -29,7 +29,9 @@ class _InputSelectState extends State<InputSelect> {
   void initState() {
     super.initState();
     _controller = widget.controller ?? TextEditingController();
-    _controller.text = widget.initialValue ?? '';
+    if (widget.initialValue != null) {
+      _controller.text = widget.initialValue!;
+    }
     _controller.addListener(() {
       setState(() {});
     });
@@ -37,7 +39,7 @@ class _InputSelectState extends State<InputSelect> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    // _controller.dispose();
     super.dispose();
   }
 

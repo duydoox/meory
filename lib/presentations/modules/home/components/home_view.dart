@@ -35,6 +35,10 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
               ],
             ),
             child: AppBar(
+              title: Text(
+                "Hi, ${appCubit.state.firebaseUser?.displayName}",
+                style: AppTextStyle.s16bold.withColor(theme.colors.primaryText),
+              ),
               actions: [
                 IconButton(
                   onPressed: () => cubit.showMenu(context),
@@ -48,27 +52,26 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
           canPop: false,
           child: RefreshIndicator(
             onRefresh: () async {},
-            child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: const SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: [
-                    const SizedBox(height: 10),
-                    Text(
-                      "Hi ${appCubit.state.firebaseUser?.displayName}, Welcome to Meory",
-                      style: AppTextStyle.s16bold.withColor(theme.colors.primaryText),
-                    ),
-                    const SizedBox(height: 100),
-                    PrimaryButton(
-                      title: 'Start quiz',
-                      onTap: () {
-                        AppNavigator.push(Routes.play);
-                      },
-                    ),
+                    SizedBox(height: 200),
                   ],
                 )),
           ),
         ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: PrimaryButton(
+            title: 'Start quiz',
+            onTap: () {
+              AppNavigator.push(Routes.play);
+            },
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       );
     });
   }

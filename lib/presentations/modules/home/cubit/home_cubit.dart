@@ -25,17 +25,11 @@ class HomeCubit extends CoreCubit<HomeState> {
               children: [
                 ListTile(
                   titleAlignment: ListTileTitleAlignment.center,
-                  title: const Text("Entries", textAlign: TextAlign.center),
+                  title: const Text("Thư viện", textAlign: TextAlign.center),
                   onTap: () {
                     AppNavigator.pop();
                     AppNavigator.push(Routes.entries);
                   },
-                ),
-                Divider(color: theme.colors.divider, height: 1),
-                ListTile(
-                  titleAlignment: ListTileTitleAlignment.center,
-                  title: Text(tr.profile, textAlign: TextAlign.center),
-                  onTap: () {},
                 ),
                 Divider(color: theme.colors.divider, height: 1),
                 ListTile(

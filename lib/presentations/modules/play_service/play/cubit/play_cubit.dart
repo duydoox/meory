@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
 import 'package:meory/domain/usecases/entry/get_entries_usecase.dart';
 import 'package:meory/domain/usecases/entry/update_entry_usecase.dart';
+import 'package:meory/presentations/routes.dart';
 import 'package:meory/presentations/service/play_service.dart';
 import 'package:meory/presentations/widgets/toast_widget.dart';
 
@@ -70,7 +71,7 @@ class PlayCubit extends CoreCubit<PlayState> {
       Toast.showInfo("End");
       return;
     }
-    if (index < state.entries.length - 3 && state.entries.length > 3) {
+    if (index > state.entries.length - 3 && state.entries.length > 3) {
       getEntries(false);
     }
     final randomAnswers = await _playService.getRandomEntry(
@@ -82,5 +83,11 @@ class PlayCubit extends CoreCubit<PlayState> {
       isShowAnswer: false,
       randomAnswers: randomAnswers,
     ));
+  }
+
+  void onTapAdd() {
+    AppNavigator.push(Routes.createEntry, {
+      'callback': getEntries,
+    });
   }
 }
