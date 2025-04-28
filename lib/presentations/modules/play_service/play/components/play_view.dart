@@ -192,7 +192,9 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
                         ? isCorrect
                             ? theme.colors.green.withOpacity(0.9)
                             : theme.colors.red.withOpacity(0.9)
-                        : theme.colors.primary.withOpacity(0.9)
+                        : isCorrect
+                            ? theme.colors.green.withOpacity(0.9)
+                            : theme.colors.primary.withOpacity(0.9)
                     : theme.colors.primary.withOpacity(0.9),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
