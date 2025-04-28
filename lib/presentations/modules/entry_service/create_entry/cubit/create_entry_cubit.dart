@@ -25,6 +25,9 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
   final partsOfSpeechController = InputController<PartsOfSpeechE>(null);
   final pronunciationController = TextEditingController();
   final categoryController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final noteController = TextEditingController();
+  final topicController = TextEditingController();
 
   init() {
     if (isEdit) {
@@ -62,6 +65,9 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
         partsOfSpeech: partsOfSpeechController.value,
         pronunciation: pronunciationController.text,
         category: categoryController.text,
+        description: descriptionController.text,
+        note: noteController.text,
+        topic: topicController.text,
       ),
     );
     result.ifSuccess(
@@ -98,6 +104,9 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
         partsOfSpeech: partsOfSpeechController.value,
         pronunciation: pronunciationController.text,
         category: categoryController.text,
+        description: descriptionController.text,
+        note: noteController.text,
+        topic: topicController.text,
       ),
     );
     result.ifSuccess(
