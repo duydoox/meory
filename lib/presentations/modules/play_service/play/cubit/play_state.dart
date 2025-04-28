@@ -5,6 +5,7 @@ class PlayState extends CoreState {
   final List<EntryModel> randomAnswers;
   final bool isShowAnswer;
   final int currentIndex;
+  final int countAdded;
   const PlayState({
     bool isLoading = false,
     String errorMessage = '',
@@ -12,6 +13,7 @@ class PlayState extends CoreState {
     this.randomAnswers = const [],
     this.isShowAnswer = false,
     this.currentIndex = 0,
+    this.countAdded = 0,
   }) : super(
           isLoading: isLoading,
           errorMessage: errorMessage,
@@ -25,6 +27,7 @@ class PlayState extends CoreState {
     List<EntryModel>? randomAnswers,
     bool? isShowAnswer,
     int? currentIndex,
+    int? countAdded,
   }) {
     return PlayState(
       isLoading: isLoading ?? this.isLoading,
@@ -33,6 +36,7 @@ class PlayState extends CoreState {
       randomAnswers: randomAnswers ?? this.randomAnswers,
       isShowAnswer: isShowAnswer ?? this.isShowAnswer,
       currentIndex: currentIndex ?? this.currentIndex,
+      countAdded: countAdded ?? this.countAdded,
     );
   }
 
@@ -44,5 +48,6 @@ class PlayState extends CoreState {
         randomAnswers,
         isShowAnswer,
         currentIndex,
+        countAdded,
       ];
 }

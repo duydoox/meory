@@ -93,12 +93,33 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
   Widget _buildProgressIndicator(PlayCubit cubit, AppTheme theme) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: LinearProgressIndicator(
-        value: (cubit.state.currentIndex + 1) / cubit.state.entries.length,
-        backgroundColor: theme.colors.primary.withOpacity(0.1),
-        valueColor: AlwaysStoppedAnimation<Color>(theme.colors.primary),
-        borderRadius: BorderRadius.circular(10),
-        minHeight: 8,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          LinearProgressIndicator(
+            value: (cubit.state.currentIndex + 1) / cubit.state.entries.length,
+            backgroundColor: theme.colors.primary.withOpacity(0.1),
+            valueColor: AlwaysStoppedAnimation<Color>(theme.colors.primary),
+            borderRadius: BorderRadius.circular(10),
+            minHeight: 8,
+          ),
+          if (cubit.state.countAdded > 0)
+            Positioned(
+              right: 0,
+              top: 12,
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: theme.colors.primary.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  '+${cubit.state.countAdded}',
+                  style: AppTextStyle.s14w500.copyWith(color: theme.colors.primary),
+                ),
+              ),
+            )
+        ],
       ),
     );
   }

@@ -27,7 +27,11 @@ class PlayCubit extends CoreCubit<PlayState> {
         emit(state.copyWith(
           isLoading: false,
           entries: reset ? entries : [...state.entries, ...entries],
+          countAdded: entries.length,
         ));
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          emit(state.copyWith(countAdded: 0));
+        });
         if (reset) {
           onIndexChange(0);
         }
