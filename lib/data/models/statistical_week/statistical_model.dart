@@ -15,10 +15,10 @@ class StatisticalModel {
 
   factory StatisticalModel.fromJson(Map<String, dynamic> json) {
     return StatisticalModel(
-      streak: json['streak'] as int?,
-      lastPlayedTime: json['lastPlayedTime'] as Timestamp?,
-      numberOfPlayed: json['numberOfPlayed'] as int?,
-      numberOfSuccess: json['numberOfSuccess'] as int?,
+      streak: json['streak'] ?? 0,
+      lastPlayedTime: json['lastPlayedTime'],
+      numberOfPlayed: json['numberOfPlayed'] ?? 0,
+      numberOfSuccess: json['numberOfSuccess'] ?? 0,
     );
   }
 

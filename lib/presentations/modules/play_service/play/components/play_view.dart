@@ -83,7 +83,7 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
           PrimaryButton(
             onTap: cubit.onTapAdd,
             title: "Thêm từ mới",
-            icon: const Icon(Icons.add),
+            icon: Icon(Icons.add, color: theme.colors.white),
           ),
         ],
       ),
