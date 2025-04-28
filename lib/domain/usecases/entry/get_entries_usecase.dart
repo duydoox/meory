@@ -7,5 +7,10 @@ class GetEntriesUseCase {
 
   const GetEntriesUseCase(this._repo);
 
-  Future<Result<List<EntryModel>>> execute() async => _repo.getEntries();
+  Future<Result<List<EntryModel>>> execute({
+    int limit = 30,
+  }) async =>
+      _repo.getEntries(
+        limit: limit,
+      );
 }

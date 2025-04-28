@@ -86,4 +86,53 @@ class EntryRepoImpl extends BaseRepository with EntryRepo {
       return Result.error(e.toString(), '');
     }
   }
+
+  @override
+  Future<Result<int>> countEntries() async {
+    try {
+      final snapshot = await firestore
+          .collection(FireBaseConllection.entries)
+          .where('userId', isEqualTo: fireAuth.currentUser?.uid)
+          .count()
+          .get();
+
+      return Result.success(snapshot.count);
+    } catch (e) {
+      return Result.error(catchError(e), '');
+    }
+  }
+
+  @override
+  Future<Result<int>> countMastered() async {
+    try {
+      final snapshot = await firestore
+          .collection(FireBaseConllection.entries)
+          .where('userId', isEqualTo: fireAuth.currentUser?.uid)
+          .where('score', isGreaterThan: 70)
+          .where('numberOfPlayed', isGreaterThanOrEqualTo: 20)
+          .count()
+          .get();
+
+      return Result.success(snapshot.count);
+    } catch (e) {
+      return Result.error(catchError(e), '');
+    }
+  }
+
+  @override
+  Future<Result<List<EntryModel>>> getHomeEntries() async {
+    try {
+      final snapshot = await firestore
+          .collection(FireBaseConllection.entries)
+          .where('userId', isEqualTo: fireAuth.currentUser?.uid)
+          .where('numberOfPlayed', isGreaterThan: 0)
+          .orderBy('lastPlayedTime')
+          .limit(5)
+          .get();
+      return Result.success(
+          snapshot.docs.map((doc) => EntryModel.fromJson({...doc.data(), 'id': doc.id})).toList());
+    } catch (e) {
+      return Result.error(catchError(e), '');
+    }
+  }
 }

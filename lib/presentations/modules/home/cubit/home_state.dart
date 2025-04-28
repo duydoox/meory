@@ -1,11 +1,11 @@
 part of 'home_cubit.dart';
 
 class HomeState extends CoreState {
-  final int pageIndex;
+  final HomeModel homeData;
   const HomeState({
     bool isLoading = false,
     String errorMessage = '',
-    this.pageIndex = 0,
+    this.homeData = const HomeModel(),
   }) : super(
           isLoading: isLoading,
           errorMessage: errorMessage,
@@ -16,18 +16,19 @@ class HomeState extends CoreState {
     bool? isLoading,
     String? errorMessage,
     int? pageIndex,
+    HomeModel? homeData,
   }) {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
-      pageIndex: pageIndex ?? this.pageIndex,
+      homeData: homeData ?? this.homeData,
     );
   }
 
   @override
   List<Object?> get props => [
-        pageIndex,
         isLoading,
         errorMessage,
+        homeData,
       ];
 }

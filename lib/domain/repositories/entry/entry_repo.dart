@@ -14,4 +14,10 @@ mixin EntryRepo {
   });
 
   Future<Result<bool>> deleteEntry({required String entryId});
+
+  Future<Result<int>> countEntries();
+
+  Future<Result<int>> countMastered();
+
+  Future<Result<List<EntryModel>>> getHomeEntries();
 }
