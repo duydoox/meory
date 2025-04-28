@@ -45,7 +45,7 @@ class _UniAppState extends State<UniApp> {
       return;
     }
     if (!AppNavigator.isLoadedSplash) {
-      await Future.delayed(const Duration(milliseconds: 2500));
+      await Future.delayed(const Duration(milliseconds: 1500));
     }
     if (link != null && link.startsWith('$scheme://$host/')) {
       final path = link.replaceAll('$scheme://$host/', '');

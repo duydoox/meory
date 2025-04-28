@@ -11,7 +11,7 @@ class SplashView extends BaseWidget<SplashCubit, SplashState> {
     //   context.read<SplashCubit>().init();
     // });
 
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 1), () {
       AppNavigator.isLoadedSplash = true;
 
       AppCubit appCubit = context.read<AppCubit>();
