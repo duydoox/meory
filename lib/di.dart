@@ -5,9 +5,11 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:meory/data/repositories/auth/auth_repo_impl.dart';
 import 'package:meory/data/repositories/entry/entry_repo_impl.dart';
 import 'package:meory/data/repositories/splash/splash_repo_impl.dart';
+import 'package:meory/data/repositories/statistical/statistical_repo_impl.dart';
 import 'package:meory/domain/repositories/auth/auth_repo.dart';
 import 'package:meory/domain/repositories/entry/entry_repo.dart';
 import 'package:meory/domain/repositories/splash/splash_repo.dart';
+import 'package:meory/domain/repositories/statistical/statistical_repo.dart';
 import 'package:meory/domain/usecases/auth/change_password_usecase.dart';
 import 'package:meory/domain/usecases/auth/login_usecase.dart';
 import 'package:meory/domain/usecases/auth/send_email_usecase.dart';
@@ -21,6 +23,8 @@ import 'package:meory/domain/usecases/entry/get_entry_usecase.dart';
 import 'package:meory/domain/usecases/entry/get_home_entries_usecase.dart';
 import 'package:meory/domain/usecases/entry/update_entry_usecase.dart';
 import 'package:meory/domain/usecases/splash/splash_usecase.dart';
+import 'package:meory/domain/usecases/statistical/get_statistical_usecase.dart';
+import 'package:meory/domain/usecases/statistical/update_statistical_usecase.dart';
 import 'package:meory/presentations/service/play_service.dart';
 
 final class DependencyInjection {
@@ -48,6 +52,7 @@ final class DependencyInjection {
     getIt.registerSingleton<SplashRepo>(SplashRepoImpl());
     getIt.registerSingleton<AuthRepo>(AuthRepoImpl());
     getIt.registerSingleton<EntryRepo>(EntryRepoImpl());
+    getIt.registerSingleton<StatisticalRepo>(StatisticalRepoImpl());
   }
 
   static void initUseCases() {
@@ -67,6 +72,12 @@ final class DependencyInjection {
     getIt.registerSingleton<GetHomeEntriesUseCase>(GetHomeEntriesUseCase(getIt.get<EntryRepo>()));
     getIt.registerSingleton<CountEntriesUseCase>(CountEntriesUseCase(getIt.get<EntryRepo>()));
     getIt.registerSingleton<CountMasteredUseCase>(CountMasteredUseCase(getIt.get<EntryRepo>()));
+
+    //statistical
+    getIt.registerSingleton<GetStatisticalUseCase>(
+        GetStatisticalUseCase(getIt.get<StatisticalRepo>()));
+    getIt.registerSingleton<UpdateStatisticalUseCase>(
+        UpdateStatisticalUseCase(getIt.get<StatisticalRepo>()));
   }
 
   static void initService() {

@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meory/app/app_cubit.dart';
+import 'package:meory/presentations/modules/home/components/home_listener.dart';
 import 'package:meory/presentations/modules/home/cubit/home_cubit.dart';
 import 'package:meory/presentations/routes.dart';
 import 'package:meory/presentations/widgets/base_widget.dart';
@@ -37,11 +38,12 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const HomeListener(),
                     _buildStatsCard(theme, cubit),
                     const SizedBox(height: 24),
-                    _buildQuickActions(theme, context),
+                    _buildQuickActions(theme, context, cubit),
                     const SizedBox(height: 24),
-                    _buildRecentWords(theme),
+                    // _buildRecentWords(theme),
                     const SizedBox(height: 100), // Space for FAB
                   ],
                 ),
@@ -103,6 +105,11 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
   }
 
   Widget _buildStatsCard(AppTheme theme, HomeCubit cubit) {
+    final stats = cubit.state.statisticalModel;
+    final successRate = stats.numberOfPlayed != null && stats.numberOfPlayed! > 0
+        ? ((stats.numberOfSuccess ?? 0) / stats.numberOfPlayed! * 100).toStringAsFixed(1)
+        : '0';
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -130,8 +137,34 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
                   'Words', cubit.state.homeData.totalEntries.toString(), Icons.book, theme),
               _buildStatItem('Mastered', cubit.state.homeData.masteredEntries.toString(),
                   Icons.psychology, theme),
-              _buildStatItem('Streak', cubit.state.homeData.streak.toString(),
+              _buildStatItem('Streak', cubit.state.statisticalModel.streak.toString(),
                   Icons.local_fire_department, theme),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Container(
+            height: 1,
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            color: theme.colors.white.withOpacity(0.2),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildStatItem(
+                'Total Plays',
+                stats.numberOfPlayed.toString(),
+                Icons.sports_esports,
+                theme,
+                small: true,
+              ),
+              _buildStatItem(
+                'Success Rate',
+                '$successRate%',
+                Icons.analytics,
+                theme,
+                small: true,
+              ),
             ],
           ),
         ],
@@ -139,24 +172,27 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
     );
   }
 
-  Widget _buildStatItem(String label, String value, IconData icon, AppTheme theme) {
+  Widget _buildStatItem(String label, String value, IconData icon, AppTheme theme,
+      {bool small = false}) {
     return Column(
       children: [
-        Icon(icon, color: theme.colors.white, size: 28),
+        Icon(icon, color: theme.colors.white, size: small ? 24 : 28),
         const SizedBox(height: 8),
         Text(
           value,
-          style: AppTextStyle.s24w500.copyWith(color: theme.colors.white),
+          style: (small ? AppTextStyle.s20w500 : AppTextStyle.s24w500)
+              .copyWith(color: theme.colors.white),
         ),
         Text(
           label,
-          style: AppTextStyle.s14w400.copyWith(color: theme.colors.white.withOpacity(0.8)),
+          style: (small ? AppTextStyle.s12w400 : AppTextStyle.s14w400)
+              .copyWith(color: theme.colors.white.withOpacity(0.8)),
         ),
       ],
     );
   }
 
-  Widget _buildQuickActions(AppTheme theme, BuildContext context) {
+  Widget _buildQuickActions(AppTheme theme, BuildContext context, HomeCubit cubit) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -200,7 +236,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: theme.colors.primary.withOpacity(0.1),
+              color: theme.colors.primary.withOpacity(0.3),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),

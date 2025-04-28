@@ -59,32 +59,6 @@ class AuthView extends BaseWidget {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Text(
-              "If not registered yet, go to ",
-              style: AppTextStyle.s14w400.copyWith(
-                color: theme.colors.greyText,
-              ),
-            ),
-            const SizedBox(
-              width: 2,
-            ),
-            InkWell(
-              onTap: onTapSignUp,
-              child: Text(
-                'Sign up',
-                style: AppTextStyle.s14w400.copyWith(color: theme.colors.primaryText),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

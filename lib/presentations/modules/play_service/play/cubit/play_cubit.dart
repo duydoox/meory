@@ -2,6 +2,8 @@ import 'package:core/core.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
 import 'package:meory/domain/usecases/entry/get_entries_usecase.dart';
 import 'package:meory/domain/usecases/entry/update_entry_usecase.dart';
+import 'package:meory/domain/usecases/statistical/update_statistical_usecase.dart';
+import 'package:meory/presentations/modules/home/cubit/home_cubit.dart';
 import 'package:meory/presentations/routes.dart';
 import 'package:meory/presentations/service/play_service.dart';
 import 'package:meory/presentations/widgets/toast_widget.dart';
@@ -11,6 +13,7 @@ part 'play_state.dart';
 class PlayCubit extends CoreCubit<PlayState> {
   final GetEntriesUseCase _getEntriesUseCase = getIt<GetEntriesUseCase>();
   final _updateEntryUseCase = getIt<UpdateEntryUseCase>();
+  final _updateStatisticalUseCase = getIt<UpdateStatisticalUseCase>();
   final PlayService _playService = getIt<PlayService>();
   PlayCubit() : super(const PlayState());
 
@@ -57,6 +60,17 @@ class PlayCubit extends CoreCubit<PlayState> {
       entry: _playService.updateEntryResult(entry, isCorrect),
       isUpdateLastPlayedTime: true,
     );
+    result.ifSuccess((data) async {
+      final resultStatistic = await _updateStatisticalUseCase.execute(result: isCorrect);
+
+      resultStatistic.ifSuccess((data) {
+        HomeCubit.neededRefreshData = true;
+      });
+
+      resultStatistic.ifError((error, errorData) {
+        Toast.showError(error ?? 'Error updating entry');
+      });
+    });
     result.ifError((error, dataError) {
       Toast.showError(error ?? 'Error updating entry');
     });

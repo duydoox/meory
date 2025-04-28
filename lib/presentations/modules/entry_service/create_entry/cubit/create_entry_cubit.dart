@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
 import 'package:meory/domain/usecases/entry/create_entry_usecase.dart';
 import 'package:meory/domain/usecases/entry/update_entry_usecase.dart';
+import 'package:meory/presentations/modules/home/cubit/home_cubit.dart';
 import 'package:meory/presentations/routes.dart';
 import 'package:meory/presentations/widgets/input_dropdown/input_dropdown.dart';
 import 'package:meory/presentations/widgets/toast_widget.dart';
@@ -36,6 +37,9 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
       partsOfSpeechController.value = entry?.partsOfSpeech;
       pronunciationController.text = entry?.pronunciation ?? '';
       categoryController.text = entry?.category ?? '';
+      descriptionController.text = entry?.description ?? '';
+      noteController.text = entry?.note ?? '';
+      topicController.text = entry?.topic ?? '';
     }
   }
 
@@ -111,6 +115,7 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
     );
     result.ifSuccess(
       (data) {
+        HomeCubit.neededRefreshData = true;
         Toast.showSuccess(
           "Entry created successfully",
         );

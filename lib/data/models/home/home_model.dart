@@ -3,7 +3,6 @@ import 'package:meory/data/models/entry/entry_model.dart';
 class HomeModel {
   final int totalEntries;
   final int masteredEntries;
-  final int streak;
   final List<EntryModel> recentEntries;
   final double masteryRate;
   final int todayLearned;
@@ -11,7 +10,6 @@ class HomeModel {
   const HomeModel({
     this.totalEntries = 0,
     this.masteredEntries = 0,
-    this.streak = 0,
     this.recentEntries = const [],
     this.masteryRate = 0.0,
     this.todayLearned = 0,
@@ -21,7 +19,6 @@ class HomeModel {
     return HomeModel(
       totalEntries: json['totalEntries'] ?? 0,
       masteredEntries: json['masteredEntries'] ?? 0,
-      streak: json['streak'] ?? 0,
       recentEntries:
           (json['recentEntries'] as List?)?.map((e) => EntryModel.fromJson(e)).toList() ?? [],
       masteryRate: json['masteryRate']?.toDouble() ?? 0.0,
@@ -33,7 +30,6 @@ class HomeModel {
     return {
       'totalEntries': totalEntries,
       'masteredEntries': masteredEntries,
-      'streak': streak,
       'recentEntries': recentEntries.map((e) => e.toJson()).toList(),
       'masteryRate': masteryRate,
       'todayLearned': todayLearned,
@@ -51,7 +47,6 @@ class HomeModel {
     return HomeModel(
       totalEntries: totalEntries ?? this.totalEntries,
       masteredEntries: masteredEntries ?? this.masteredEntries,
-      streak: streak ?? this.streak,
       recentEntries: recentEntries ?? this.recentEntries,
       masteryRate: masteryRate ?? this.masteryRate,
       todayLearned: todayLearned ?? this.todayLearned,
@@ -61,7 +56,6 @@ class HomeModel {
   bool get isEmpty =>
       totalEntries == 0 &&
       masteredEntries == 0 &&
-      streak == 0 &&
       recentEntries.isEmpty &&
       masteryRate == 0.0 &&
       todayLearned == 0;

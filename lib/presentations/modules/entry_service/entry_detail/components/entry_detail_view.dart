@@ -15,14 +15,17 @@ class EntryDetailView extends BaseWidget<EntryDetailCubit, EntryDetailState> {
     return Scaffold(
       backgroundColor: theme.colors.background,
       appBar: AppBar(
-        title: const Text('Chi tiết'),
+        title: Text(
+          'Chi tiết',
+          style: AppTextStyle.s20w600.copyWith(color: theme.colors.primary),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.edit),
+            icon: Icon(Icons.edit, color: theme.colors.primary),
             onPressed: cubit.onTapEdit,
           ),
           IconButton(
-            icon: const Icon(Icons.delete),
+            icon: Icon(Icons.delete, color: theme.colors.primary),
             onPressed: () => cubit.onTapDelete(context),
           ),
         ],

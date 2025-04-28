@@ -47,7 +47,7 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
         child: Column(
           children: [
             if (cubit.state.isLoading)
-              const Center(child: CircularProgressIndicator())
+              const SizedBox()
             else if (cubit.state.entries.length < 4)
               _buildEmptyState(cubit, theme)
             else ...[

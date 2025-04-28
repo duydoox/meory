@@ -143,7 +143,7 @@ class EntryModel {
 enum PartsOfSpeechE {
   noun('N'),
   verb('V'),
-  adjective('A'),
+  adjective('Adj'),
   adverb('Adv'),
   preposition('P'),
   conjunction('C'),

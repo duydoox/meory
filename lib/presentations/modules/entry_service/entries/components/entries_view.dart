@@ -96,7 +96,7 @@ class EntriesView extends BaseWidget<EntriesCubit, EntriesState> {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: theme.colors.primary.withOpacity(0.1),
+              color: theme.colors.primary.withOpacity(0.2),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -107,14 +107,31 @@ class EntriesView extends BaseWidget<EntriesCubit, EntriesState> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: Text(
-                    entry.headword ?? '',
-                    style: AppTextStyle.s20w600.copyWith(
-                      color: theme.colors.primary,
-                      letterSpacing: 0.5,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        entry.headword ?? '',
+                        style: AppTextStyle.s20w600.copyWith(
+                          color: theme.colors.primary,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      if (entry.pronunciation != null && entry.pronunciation!.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            "/${entry.pronunciation}/",
+                            style: AppTextStyle.s14w400.copyWith(
+                              color: theme.colors.greyText,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 if (entry.score != null)
