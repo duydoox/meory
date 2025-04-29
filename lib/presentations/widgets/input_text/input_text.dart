@@ -22,6 +22,7 @@ class InputText extends StatefulWidget {
   final TextInputAction? textInputAction;
   final ValueChanged<String>? onChangedText;
   final ValueChanged<String>? onSubmitted;
+  final ValueChanged<String>? onBlur;
   final String? Function(String? value)? validator;
   final FormInputText? formInputText;
 
@@ -41,6 +42,7 @@ class InputText extends StatefulWidget {
     this.textInputAction,
     this.onChangedText,
     this.onSubmitted,
+    this.onBlur,
     this.controller,
     this.validator,
     this.formInputText,
@@ -75,6 +77,12 @@ class _InputTextState extends State<InputText> {
     if (widget.countryController?.text == '') {
       widget.countryController?.text = '+00';
     }
+
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        widget.onBlur?.call(_textEditingController.text);
+      }
+    });
 
     super.initState();
   }

@@ -4,10 +4,12 @@ import 'package:core/core.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:meory/data/repositories/auth/auth_repo_impl.dart';
 import 'package:meory/data/repositories/entry/entry_repo_impl.dart';
+import 'package:meory/data/repositories/openai/openai_repo_impl.dart';
 import 'package:meory/data/repositories/splash/splash_repo_impl.dart';
 import 'package:meory/data/repositories/statistical/statistical_repo_impl.dart';
 import 'package:meory/domain/repositories/auth/auth_repo.dart';
 import 'package:meory/domain/repositories/entry/entry_repo.dart';
+import 'package:meory/domain/repositories/openai/openai_repo.dart';
 import 'package:meory/domain/repositories/splash/splash_repo.dart';
 import 'package:meory/domain/repositories/statistical/statistical_repo.dart';
 import 'package:meory/domain/usecases/auth/change_password_usecase.dart';
@@ -22,6 +24,7 @@ import 'package:meory/domain/usecases/entry/get_entries_usecase.dart';
 import 'package:meory/domain/usecases/entry/get_entry_usecase.dart';
 import 'package:meory/domain/usecases/entry/get_home_entries_usecase.dart';
 import 'package:meory/domain/usecases/entry/update_entry_usecase.dart';
+import 'package:meory/domain/usecases/openai/get_prompt_word_usecase.dart';
 import 'package:meory/domain/usecases/splash/splash_usecase.dart';
 import 'package:meory/domain/usecases/statistical/get_statistical_usecase.dart';
 import 'package:meory/domain/usecases/statistical/update_statistical_usecase.dart';
@@ -53,6 +56,7 @@ final class DependencyInjection {
     getIt.registerSingleton<AuthRepo>(AuthRepoImpl());
     getIt.registerSingleton<EntryRepo>(EntryRepoImpl());
     getIt.registerSingleton<StatisticalRepo>(StatisticalRepoImpl());
+    getIt.registerSingleton<OpenaiRepo>(OpenaiRepoImpl());
   }
 
   static void initUseCases() {
@@ -78,6 +82,9 @@ final class DependencyInjection {
         GetStatisticalUseCase(getIt.get<StatisticalRepo>()));
     getIt.registerSingleton<UpdateStatisticalUseCase>(
         UpdateStatisticalUseCase(getIt.get<StatisticalRepo>()));
+
+    //openai
+    getIt.registerSingleton<GetPromptWordUseCase>(GetPromptWordUseCase(getIt.get<OpenaiRepo>()));
   }
 
   static void initService() {

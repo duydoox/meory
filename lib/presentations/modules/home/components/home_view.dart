@@ -137,7 +137,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
                   'Words', cubit.state.homeData.totalEntries.toString(), Icons.book, theme),
               _buildStatItem('Mastered', cubit.state.homeData.masteredEntries.toString(),
                   Icons.psychology, theme),
-              _buildStatItem('Streak', cubit.state.statisticalModel.streak.toString(),
+              _buildStatItem('Streak', cubit.state.statisticalModel.streak?.toString() ?? '0',
                   Icons.local_fire_department, theme),
             ],
           ),
@@ -153,7 +153,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
             children: [
               _buildStatItem(
                 'Total Plays',
-                stats.numberOfPlayed.toString(),
+                stats.numberOfPlayed?.toString() ?? '0',
                 Icons.sports_esports,
                 theme,
                 small: true,

@@ -43,6 +43,10 @@ class CreateEntryView extends BaseWidget<CreateEntryCubit, CreateEntryState> {
               InputText(
                 hintText: 'Nhập từ vựng',
                 controller: cubit.headwordController,
+                suffixIcon: GestureDetector(
+                  onTap: () => cubit.getPromptWord(),
+                  child: const Icon(Icons.search),
+                ),
               ),
               const SizedBox(height: 8),
               _buildSectionTitle('Định nghĩa *', theme),

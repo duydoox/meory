@@ -81,7 +81,7 @@ class EntryModel {
     };
   }
 
-  Map<String, dynamic> toUpdate() {
+  Map<String, dynamic> toJsonUpdate() {
     return AppUtils.removeNullValues({
       'headword': headword,
       'definition': definition,
@@ -98,6 +98,16 @@ class EntryModel {
       'lastPlayedTime': lastPlayedTime,
       'lastPlayedResult': lastPlayedResult,
       'score': score,
+    });
+  }
+
+  Map<String, dynamic> toJsonAsk() {
+    return AppUtils.removeNullValues({
+      'definition': definition,
+      'partsOfSpeech': partsOfSpeech?.index,
+      'pronunciation': pronunciation,
+      'category': category,
+      'topic': topic,
     });
   }
 

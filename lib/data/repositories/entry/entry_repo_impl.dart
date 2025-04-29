@@ -40,7 +40,7 @@ class EntryRepoImpl extends BaseRepository with EntryRepo {
   Future<Result<String>> createEntry({required EntryModel entry}) async {
     try {
       final snapshot = await firestore.collection(FireBaseConllection.entries).add({
-        ...entry.toUpdate(),
+        ...entry.toJsonUpdate(),
         'userId': fireAuth.currentUser?.uid,
         'lastPlayedTime': FieldValue.serverTimestamp(),
         'createdAt': FieldValue.serverTimestamp(),
@@ -67,7 +67,7 @@ class EntryRepoImpl extends BaseRepository with EntryRepo {
           .doc(entry.id)
           .update(
         {
-          ...entry.toUpdate(),
+          ...entry.toJsonUpdate(),
           if (isUpdateLastPlayedTime) 'lastPlayedTime': FieldValue.serverTimestamp(),
         },
       );

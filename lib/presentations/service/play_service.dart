@@ -70,8 +70,20 @@ class PlayService {
       final bScore = calculateImportanceScore(b);
       return bScore.compareTo(aScore);
     });
+    final originalList = entries.take(take).toList();
+    List<EntryModel> result = [];
 
-    return entries.take(take).toList();
+    // Chia danh sách thành các nhóm con có kích thước 10
+    // Trộn các nhóm con
+    final random = Random();
+    for (int i = 0; i < originalList.length; i += 10) {
+      int end = (i + 10 < originalList.length) ? i + 10 : originalList.length;
+      List<EntryModel> sublist = originalList.sublist(i, end);
+      sublist.shuffle(random);
+      result.addAll(sublist);
+    }
+
+    return result;
   }
 
   double calculateImportanceScore(EntryModel entry) {

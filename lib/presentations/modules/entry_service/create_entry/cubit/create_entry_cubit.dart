@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
 import 'package:meory/domain/usecases/entry/create_entry_usecase.dart';
 import 'package:meory/domain/usecases/entry/update_entry_usecase.dart';
+import 'package:meory/domain/usecases/openai/get_prompt_word_usecase.dart';
 import 'package:meory/presentations/modules/home/cubit/home_cubit.dart';
 import 'package:meory/presentations/routes.dart';
 import 'package:meory/presentations/widgets/input_dropdown/input_dropdown.dart';
@@ -13,6 +14,7 @@ part 'create_entry_state.dart';
 class CreateEntryCubit extends CoreCubit<CreateEntryState> {
   final _createEntryUseCase = getIt<CreateEntryUseCase>();
   final _updateEntryUseCase = getIt<UpdateEntryUseCase>();
+  final _getPromptWordUseCase = getIt<GetPromptWordUseCase>();
 
   CreateEntryCubit({this.callback, this.entry}) : super(const CreateEntryState());
 
@@ -49,6 +51,32 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
     } else {
       createEntry();
     }
+  }
+
+  Future<void> getPromptWord() async {
+    if (state.isLoading || headwordController.text.trim().isEmpty) return;
+    emit(state.copyWith(isLoading: true, errorMessage: ''));
+    final result = await _getPromptWordUseCase.execute(
+      word: headwordController.text,
+    );
+    result.ifSuccess(
+      (data) {
+        if (data?.isNotEmpty == true) {
+          final entry = data!.first;
+          definitionController.text = entry.definition ?? '';
+          partsOfSpeechController.value = entry.partsOfSpeech;
+          pronunciationController.text = entry.pronunciation ?? '';
+          categoryController.text = entry.category ?? '';
+          topicController.text = entry.topic ?? '';
+        }
+        emit(state.copyWith(isLoading: false));
+      },
+    );
+    result.ifError(
+      (error, dataError) {
+        emit(state.copyWith(isLoading: false, errorMessage: error));
+      },
+    );
   }
 
   Future<void> updateEntry() async {
