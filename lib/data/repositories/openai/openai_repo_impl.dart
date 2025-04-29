@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:core/core.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:meory/data/data_source/remote/base_repository.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
 import 'package:meory/domain/repositories/openai/openai_repo.dart';
@@ -59,8 +60,8 @@ class OpenaiRepoImpl extends BaseRepository with OpenaiRepo {
         "partsOfSpeech là index của mảng sau ${PartsOfSpeechE.values.map((e) => e.name).toList().toString()}";
     final ask =
         "Giải thích: $explain. Câu hỏi: Hãy dịch từ $word sang tiếng Việt. Trả lời bằng JSON với cấu trúc: [$struct]. Nếu từ $word có nhiều nghĩa thì bạn cho nhiều trả lời vào mảng, tối đa 3 nghĩa. Chuỗi json trả về dạng json bình thường mà không cần phải để ở dạng markdown json";
-    const apiKey = "";
-    const url =
+    final apiKey = dotenv.env['API_KEY'];
+    final url =
         'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$apiKey';
     try {
       Log.d('Request open ai: $ask');
