@@ -73,6 +73,7 @@ enum ErrorType {
   INPUT_INVALID._('INPUT_INVALID', 'Input invalid', "입력 오류"),
   VERIFY_CONTACT_NOT_EXIST._('VERIFY_CONTACT_NOT_EXIST', 'Contact not exist', "연락처가 존재하지 않습니다"),
   THE_CONNECTION_ERRORED._('THE CONNECTION ERRORED', 'Server is under maintenance', "서버 점검중입니다"),
+  THE_CONNECTION_TIMED_OUT._('TimeoutException', 'Time out', "시간 초과"),
   unknown._('UNKNOWN', 'Unknown Error', "알 수 없는 오류"),
   none._('NONE', 'The server is busy', "서버가 바빠요");
 

@@ -104,9 +104,6 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_lock.svg
   SvgGenImage get icLock => const SvgGenImage('assets/icons/ic_lock.svg');
 
-  /// File path: assets/icons/ic_logo.svg
-  SvgGenImage get icLogo => const SvgGenImage('assets/icons/ic_logo.svg');
-
   /// File path: assets/icons/ic_mail.svg
   SvgGenImage get icMail => const SvgGenImage('assets/icons/ic_mail.svg');
 
@@ -177,7 +174,6 @@ class $AssetsIconsGen {
         icHome,
         icImage,
         icLock,
-        icLogo,
         icMail,
         icMic,
         icMore,
@@ -202,72 +198,26 @@ class $AssetsImagesGen {
   /// File path: assets/images/README.md
   String get readme => 'assets/images/README.md';
 
-  /// File path: assets/images/ic_avatar_empty.png
-  AssetGenImage get icAvatarEmpty =>
-      const AssetGenImage('assets/images/ic_avatar_empty.png');
-
-  /// File path: assets/images/ic_heart.jpg
-  AssetGenImage get icHeart =>
-      const AssetGenImage('assets/images/ic_heart.jpg');
-
-  /// File path: assets/images/ic_ibk.png
-  AssetGenImage get icIbk => const AssetGenImage('assets/images/ic_ibk.png');
-
-  /// File path: assets/images/ic_kb.png
-  AssetGenImage get icKb => const AssetGenImage('assets/images/ic_kb.png');
-
-  /// File path: assets/images/ic_line.png
-  AssetGenImage get icLinePng =>
-      const AssetGenImage('assets/images/ic_line.png');
-
-  /// File path: assets/images/ic_line.zip
-  String get icLineZip => 'assets/images/ic_line.zip';
-
   /// File path: assets/images/ic_logo.png
   AssetGenImage get icLogo => const AssetGenImage('assets/images/ic_logo.png');
-
-  /// File path: assets/images/ic_sol_pay.png
-  AssetGenImage get icSolPay =>
-      const AssetGenImage('assets/images/ic_sol_pay.png');
-
-  /// File path: assets/images/ic_time_end.png
-  AssetGenImage get icTimeEnd =>
-      const AssetGenImage('assets/images/ic_time_end.png');
-
-  /// File path: assets/images/ic_won.png
-  AssetGenImage get icWon => const AssetGenImage('assets/images/ic_won.png');
 
   /// File path: assets/images/icon.png
   AssetGenImage get icon => const AssetGenImage('assets/images/icon.png');
 
-  /// File path: assets/images/lets_you_in.jpeg
-  AssetGenImage get letsYouIn =>
-      const AssetGenImage('assets/images/lets_you_in.jpeg');
-
   /// List of all assets
-  List<dynamic> get values => [
-        readme,
-        icAvatarEmpty,
-        icHeart,
-        icIbk,
-        icKb,
-        icLinePng,
-        icLineZip,
-        icLogo,
-        icSolPay,
-        icTimeEnd,
-        icWon,
-        icon,
-        letsYouIn
-      ];
+  List<dynamic> get values => [readme, icLogo, icon];
 }
 
 class Assets {
   Assets._();
 
+  static const String aEnv = '.env';
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+
+  /// List of all assets
+  static List<String> get values => [aEnv];
 }
 
 class AssetGenImage {

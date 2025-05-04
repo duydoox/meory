@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meory/presentations/utils/app_utils.dart';
 import 'package:meory/presentations/widgets/base_widget.dart';
 
 import '../cubit/entry_detail_cubit.dart';
@@ -66,7 +67,7 @@ class EntryDetailView extends BaseWidget<EntryDetailCubit, EntryDetailState> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        "/${cubit.entry.pronunciation}/",
+                        AppUtils.showPronunciation(cubit.entry.pronunciation),
                         style: AppTextStyle.s16w400.copyWith(
                           color: theme.colors.primary,
                           fontStyle: FontStyle.italic,

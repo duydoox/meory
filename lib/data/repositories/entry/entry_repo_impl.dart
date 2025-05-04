@@ -94,7 +94,8 @@ class EntryRepoImpl extends BaseRepository with EntryRepo {
           .collection(FireBaseConllection.entries)
           .where('userId', isEqualTo: fireAuth.currentUser?.uid)
           .count()
-          .get();
+          .get()
+          .timeout(const Duration(seconds: 10));
 
       return Result.success(snapshot.count);
     } catch (e) {
@@ -111,7 +112,8 @@ class EntryRepoImpl extends BaseRepository with EntryRepo {
           .where('score', isGreaterThan: 70)
           .where('numberOfPlayed', isGreaterThanOrEqualTo: 20)
           .count()
-          .get();
+          .get()
+          .timeout(const Duration(seconds: 10));
 
       return Result.success(snapshot.count);
     } catch (e) {
@@ -128,7 +130,8 @@ class EntryRepoImpl extends BaseRepository with EntryRepo {
           .where('numberOfPlayed', isGreaterThan: 0)
           .orderBy('lastPlayedTime')
           .limit(5)
-          .get();
+          .get()
+          .timeout(const Duration(seconds: 10));
       return Result.success(
           snapshot.docs.map((doc) => EntryModel.fromJson({...doc.data(), 'id': doc.id})).toList());
     } catch (e) {

@@ -138,6 +138,7 @@ class _InputTextState extends State<InputText> {
                   minLines: widget.minLines,
                   decoration: InputDecoration(
                     isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                     prefixIcon: widget.prefixIcon ?? buildCountryPicker(),
                     suffixIcon: obscureText || widget.suffixIcon != null
                         ? InkWell(

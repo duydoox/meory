@@ -46,4 +46,15 @@ class AppUtils {
       original.entries.where((entry) => entry.value != null),
     );
   }
+
+  static String showPronunciation(String? pronunciation) {
+    if (pronunciation == null || pronunciation.isEmpty) {
+      return '';
+    }
+    String p = pronunciation.trim();
+    if (pronunciation.startsWith('/') && pronunciation.endsWith('/')) {
+      p = pronunciation.substring(1, pronunciation.length - 1);
+    }
+    return '/$p/';
+  }
 }

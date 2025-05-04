@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
+import 'package:meory/presentations/utils/app_utils.dart';
 import 'package:meory/presentations/widgets/base_widget.dart';
 import 'package:meory/presentations/widgets/button_widget/primary_button.dart';
 
@@ -145,6 +146,17 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
             ),
             textAlign: TextAlign.center,
           ),
+          if (currentEntry?.pronunciation != null && currentEntry!.pronunciation!.isNotEmpty) ...[
+            const SizedBox(height: 4),
+            Text(
+              AppUtils.showPronunciation(currentEntry.pronunciation),
+              style: AppTextStyle.s16w400.copyWith(
+                color: theme.colors.primary,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
           if (currentEntry?.partsOfSpeech != null) ...[
             const SizedBox(height: 8),
             Container(
