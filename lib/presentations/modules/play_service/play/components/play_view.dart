@@ -53,12 +53,19 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
               _buildEmptyState(cubit, theme)
             else ...[
               _buildProgressIndicator(cubit, theme),
-              _buildQuestionCard(currentEntry, theme),
-              const Spacer(),
-              _buildSpeakButton(cubit, theme),
-              const SizedBox(height: 16),
-              _buildAnswerOptions(cubit, currentEntry, theme, context),
-              const SizedBox(height: 32),
+              Expanded(
+                child: Column(
+                  children: [
+                    const Spacer(flex: 1),
+                    _buildQuestionCard(currentEntry, theme),
+                    const Spacer(flex: 2),
+                    _buildSpeakButton(cubit, theme),
+                    const SizedBox(height: 8),
+                    _buildAnswerOptions(cubit, currentEntry, theme, context),
+                    const SizedBox(height: 32),
+                  ],
+                ),
+              ),
             ]
           ],
         ),
@@ -129,8 +136,7 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
 
   Widget _buildQuestionCard(EntryModel? currentEntry, AppTheme theme) {
     return Container(
-      margin: const EdgeInsets.all(24),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 32),
       decoration: BoxDecoration(
         color: theme.colors.primary.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
@@ -157,7 +163,6 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
                 fontStyle: FontStyle.italic,
               ),
             ),
-            const SizedBox(height: 8),
           ],
           if (currentEntry?.partsOfSpeech != null) ...[
             const SizedBox(height: 8),
@@ -181,30 +186,20 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
   }
 
   Widget _buildSpeakButton(PlayCubit cubit, AppTheme theme) {
-    return Align(
-      alignment: Alignment.bottomRight,
-      child: GestureDetector(
-        onTap: cubit.speak,
-        child: Container(
-          width: 48,
-          height: 48,
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: theme.colors.primary.withOpacity(0.9),
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: theme.colors.primary.withOpacity(0.2),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Icon(
-            Icons.volume_up,
-            color: theme.colors.white,
-            size: 24,
-          ),
+    return GestureDetector(
+      onTap: cubit.speak,
+      child: Container(
+        width: 40,
+        height: 40,
+        margin: const EdgeInsets.only(left: 12),
+        decoration: BoxDecoration(
+          color: theme.colors.primary.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Icon(
+          Icons.volume_up,
+          color: theme.colors.primary,
+          size: 20,
         ),
       ),
     );
@@ -216,50 +211,61 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
     AppTheme theme,
     BuildContext context,
   ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Wrap(
-        spacing: 16,
-        runSpacing: 16,
-        children: cubit.state.randomAnswers.map((entry) {
-          final isCorrect = entry.id == currentEntry?.id;
-          final isSelected = entry.id == cubit.answerSelected.id;
-
-          return GestureDetector(
-            onTap: cubit.state.isShowAnswer ? null : () => cubit.onTapAnswer(entry),
-            child: Container(
-              width: Utils.getWidth(context) / 2 - 24,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: cubit.state.isShowAnswer
-                    ? isSelected
-                        ? isCorrect
-                            ? theme.colors.green.withOpacity(0.9)
-                            : theme.colors.red.withOpacity(0.9)
-                        : isCorrect
-                            ? theme.colors.green.withOpacity(0.9)
-                            : theme.colors.primary.withOpacity(0.9)
-                    : theme.colors.primary.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: theme.colors.primary.withOpacity(0.2),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Text(
-                entry.definition ?? '',
-                textAlign: TextAlign.center,
-                style: AppTextStyle.s16w500.copyWith(
-                  color: theme.colors.white,
-                  height: 1.4,
-                ),
-              ),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          Text(
+            'Choose the correct definition',
+            style: AppTextStyle.s14w500.copyWith(
+              color: theme.colors.greyText,
             ),
-          );
-        }).toList(),
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            children: cubit.state.randomAnswers.map((entry) {
+              final isCorrect = entry.id == currentEntry?.id;
+              final isSelected = entry.id == cubit.answerSelected.id;
+
+              return GestureDetector(
+                onTap: cubit.state.isShowAnswer ? null : () => cubit.onTapAnswer(entry),
+                child: Container(
+                  width: Utils.getWidth(context) / 2 - 24,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: cubit.state.isShowAnswer
+                        ? isSelected
+                            ? isCorrect
+                                ? theme.colors.green.withOpacity(0.9)
+                                : theme.colors.red.withOpacity(0.9)
+                            : isCorrect
+                                ? theme.colors.green.withOpacity(0.9)
+                                : theme.colors.primary.withOpacity(0.9)
+                        : theme.colors.primary.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: theme.colors.primary.withOpacity(0.2),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    entry.definition ?? '',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.s16w500.copyWith(
+                      color: theme.colors.white,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }

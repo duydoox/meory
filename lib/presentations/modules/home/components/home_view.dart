@@ -215,7 +215,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
             Expanded(
               child: _buildActionCard(
                 'Review',
-                Icons.replay_outlined,
+                Icons.list_alt,
                 theme,
                 () => AppNavigator.push(Routes.entries),
               ),

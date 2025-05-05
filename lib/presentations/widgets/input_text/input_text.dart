@@ -8,6 +8,7 @@ import 'package:meory/generated/assets.gen.dart';
 class InputText extends StatefulWidget {
   final TextEditingController? controller;
   final TextEditingController? countryController;
+  final FocusNode? focusNode;
   final String? hintText;
   final String? initValue;
   final Widget? prefixIcon;
@@ -19,6 +20,7 @@ class InputText extends StatefulWidget {
   final bool? isPassword;
   final double? height;
   final bool enabled;
+  final bool autofocus;
   final TextInputAction? textInputAction;
   final ValueChanged<String>? onChangedText;
   final ValueChanged<String>? onSubmitted;
@@ -39,11 +41,13 @@ class InputText extends StatefulWidget {
     this.isPassword,
     this.height,
     this.enabled = true,
+    this.autofocus = false,
     this.textInputAction,
     this.onChangedText,
     this.onSubmitted,
     this.onBlur,
     this.controller,
+    this.focusNode,
     this.validator,
     this.formInputText,
     this.countryController,
@@ -54,7 +58,7 @@ class InputText extends StatefulWidget {
 }
 
 class _InputTextState extends State<InputText> {
-  final FocusNode _focusNode = FocusNode();
+  late final FocusNode _focusNode;
   late final TextEditingController _textEditingController;
 
   bool obscureText = false;
@@ -66,6 +70,7 @@ class _InputTextState extends State<InputText> {
   @override
   void initState() {
     _textEditingController = widget.controller ?? TextEditingController();
+    _focusNode = widget.focusNode ?? FocusNode();
     widget.formInputText?._registerValidate(_registerValidate);
     obscureText = widget.isPassword ?? false;
     if (widget.initValue != null) {
@@ -103,8 +108,6 @@ class _InputTextState extends State<InputText> {
 
   @override
   void dispose() {
-    // _textEditingController.dispose();
-    _focusNode.dispose();
     super.dispose();
   }
 
@@ -125,6 +128,7 @@ class _InputTextState extends State<InputText> {
                   controller: _textEditingController,
                   textInputAction: widget.textInputAction,
                   onSubmitted: widget.onSubmitted,
+                  autofocus: widget.autofocus,
                   onTapOutside: (val) {
                     _focusNode.unfocus();
                   },

@@ -71,7 +71,7 @@ class _CoreWidgetState<C extends CoreCubit<S>, S extends CoreState, A extends Cu
             buildWhen: (previous, current) => previous.isLoading != current.isLoading,
             builder: (context, state) {
               if (state.isLoading) {
-                return _showLoading();
+                return _showLoading(theme);
               }
               return const SizedBox();
             },
@@ -80,7 +80,7 @@ class _CoreWidgetState<C extends CoreCubit<S>, S extends CoreState, A extends Cu
     );
   }
 
-  Widget _showLoading() {
+  Widget _showLoading(AppTheme? theme) {
     return Stack(
       children: [
         ModalBarrier(
@@ -88,7 +88,10 @@ class _CoreWidgetState<C extends CoreCubit<S>, S extends CoreState, A extends Cu
           dismissible: false,
         ),
         Center(
-          child: widget.loadingWidget ?? const LoadingWidget(),
+          child: widget.loadingWidget ??
+              LoadingWidget(
+                color: theme?.colors.primary ?? Colors.black,
+              ),
         ),
       ],
     );

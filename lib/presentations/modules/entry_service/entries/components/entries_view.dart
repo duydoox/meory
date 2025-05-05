@@ -6,6 +6,7 @@ import 'package:meory/presentations/service/tts_service.dart';
 import 'package:meory/presentations/utils/app_utils.dart';
 import 'package:meory/presentations/widgets/base_widget.dart';
 import 'package:meory/presentations/widgets/button_widget/primary_button.dart';
+import 'package:meory/presentations/widgets/input_text/input_text.dart';
 
 import '../cubit/entries_cubit.dart';
 
@@ -25,13 +26,27 @@ class EntriesView extends BaseWidget<EntriesCubit, EntriesState> {
     return Scaffold(
       backgroundColor: theme.colors.background,
       appBar: AppBar(
-        title: Text(
-          'Từ vựng của bạn',
-          style: AppTextStyle.s18w600.copyWith(color: theme.colors.primary),
-        ),
+        title: cubit.state.isSearching
+            ? InputText(
+                controller: cubit.searchController,
+                hintText: 'Nhập từ khóa tìm kiếm',
+                autofocus: true,
+                onSubmitted: cubit.onSearch,
+              )
+            : Text(
+                'Từ vựng của bạn',
+                style: AppTextStyle.s18w600.copyWith(color: theme.colors.primary),
+              ),
         centerTitle: true,
         elevation: 0,
         actions: [
+          IconButton(
+            icon: Icon(
+              cubit.state.isSearching ? Icons.close : Icons.search,
+              color: theme.colors.primary,
+            ),
+            onPressed: cubit.onTapIconSearch,
+          ),
           IconButton(
             icon: Icon(Icons.add, color: theme.colors.primary),
             onPressed: cubit.onTapAdd,
@@ -73,14 +88,23 @@ class EntriesView extends BaseWidget<EntriesCubit, EntriesState> {
             )
           else
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                itemCount: cubit.state.entries.length,
-                itemBuilder: (context, index) {
-                  final entry = cubit.state.entries[index];
-                  return buildEntryItem(entry, theme, () => cubit.onTapItem(entry));
-                },
-              ),
+              child: cubit.state.isSearched
+                  ? ListView.builder(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      itemCount: cubit.state.entriesSearch.length,
+                      itemBuilder: (context, index) {
+                        final entry = cubit.state.entriesSearch[index];
+                        return buildEntryItem(entry, theme, () => cubit.onTapItem(entry));
+                      },
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      itemCount: cubit.state.entries.length,
+                      itemBuilder: (context, index) {
+                        final entry = cubit.state.entries[index];
+                        return buildEntryItem(entry, theme, () => cubit.onTapItem(entry));
+                      },
+                    ),
             ),
         ],
       ),
