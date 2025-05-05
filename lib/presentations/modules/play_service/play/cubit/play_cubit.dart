@@ -5,6 +5,7 @@ import 'package:meory/domain/usecases/entry/update_entry_usecase.dart';
 import 'package:meory/domain/usecases/statistical/update_statistical_usecase.dart';
 import 'package:meory/presentations/modules/home/cubit/home_cubit.dart';
 import 'package:meory/presentations/routes.dart';
+import 'package:meory/presentations/service/audio_service.dart';
 import 'package:meory/presentations/service/play_service.dart';
 import 'package:meory/presentations/service/tts_service.dart';
 import 'package:meory/presentations/widgets/toast_widget.dart';
@@ -57,6 +58,11 @@ class PlayCubit extends CoreCubit<PlayState> {
     final currentEntry = state.entries.elementAtOrNull(state.currentIndex);
     if (currentEntry == null) return;
     final isCorrect = entry.id == currentEntry.id;
+    if (isCorrect) {
+      AudioService().play(AudioType.ting);
+    } else {
+      AudioService().play(AudioType.wrong);
+    }
     final result = await _updateEntryUseCase.execute(
       entry: _playService.updateEntryResult(entry, isCorrect),
       isUpdateLastPlayedTime: true,
@@ -102,8 +108,12 @@ class PlayCubit extends CoreCubit<PlayState> {
       isShowAnswer: false,
       randomAnswers: randomAnswers,
     ));
+    speak();
+  }
+
+  void speak() {
     TtsService().speak(
-      state.entries.elementAtOrNull(index)?.headword ?? '',
+      state.entries.elementAtOrNull(state.currentIndex)?.headword ?? '',
     );
   }
 

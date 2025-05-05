@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
+import 'package:meory/presentations/service/tts_service.dart';
 import 'package:meory/presentations/utils/app_utils.dart';
 import 'package:meory/presentations/widgets/base_widget.dart';
 import 'package:meory/presentations/widgets/button_widget/primary_button.dart';
@@ -114,12 +115,32 @@ class EntriesView extends BaseWidget<EntriesCubit, EntriesState> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        entry.headword ?? '',
-                        style: AppTextStyle.s20w600.copyWith(
-                          color: theme.colors.primary,
-                          letterSpacing: 0.5,
-                        ),
+                      Row(
+                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            entry.headword ?? '',
+                            style: AppTextStyle.s20w600.copyWith(
+                              color: theme.colors.primary,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 18,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.volume_up_rounded,
+                                color: theme.colors.primary,
+                                size: 20,
+                              ),
+                              onPressed: () {
+                                TtsService().speak(entry.headword ?? '');
+                              },
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                            ),
+                          ),
+                        ],
                       ),
                       if (entry.pronunciation != null && entry.pronunciation!.isNotEmpty)
                         Padding(

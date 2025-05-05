@@ -140,7 +140,7 @@ class _InputTextState extends State<InputText> {
                     isDense: true,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                     prefixIcon: widget.prefixIcon ?? buildCountryPicker(),
-                    suffixIcon: obscureText || widget.suffixIcon != null
+                    suffixIcon: widget.isPassword == true
                         ? InkWell(
                             onTap: () {
                               setState(() {
@@ -149,7 +149,7 @@ class _InputTextState extends State<InputText> {
                             },
                             child: obscureText ? widget.suffixIconChangeOnTap : widget.suffixIcon,
                           )
-                        : null,
+                        : widget.suffixIcon,
                     suffixIconConstraints: const BoxConstraints(
                         minWidth: 46, minHeight: 15, maxHeight: 15, maxWidth: 46),
                     fillColor: theme.colors.inputBackground,

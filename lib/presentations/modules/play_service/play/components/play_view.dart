@@ -55,6 +55,8 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
               _buildProgressIndicator(cubit, theme),
               _buildQuestionCard(currentEntry, theme),
               const Spacer(),
+              _buildSpeakButton(cubit, theme),
+              const SizedBox(height: 16),
               _buildAnswerOptions(cubit, currentEntry, theme, context),
               const SizedBox(height: 32),
             ]
@@ -174,6 +176,36 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
             ),
           ],
         ],
+      ),
+    );
+  }
+
+  Widget _buildSpeakButton(PlayCubit cubit, AppTheme theme) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: GestureDetector(
+        onTap: cubit.speak,
+        child: Container(
+          width: 48,
+          height: 48,
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: theme.colors.primary.withOpacity(0.9),
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: theme.colors.primary.withOpacity(0.2),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Icon(
+            Icons.volume_up,
+            color: theme.colors.white,
+            size: 24,
+          ),
+        ),
       ),
     );
   }
