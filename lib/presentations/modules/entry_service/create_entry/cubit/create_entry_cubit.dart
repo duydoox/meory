@@ -61,15 +61,7 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
     );
     result.ifSuccess(
       (data) {
-        if (data?.isNotEmpty == true) {
-          final entry = data!.first;
-          definitionController.text = entry.definition ?? '';
-          partsOfSpeechController.value = entry.partsOfSpeech;
-          pronunciationController.text = entry.pronunciation ?? '';
-          categoryController.text = entry.category ?? '';
-          topicController.text = entry.topic ?? '';
-        }
-        emit(state.copyWith(isLoading: false));
+        emit(state.copyWith(isLoading: false, prompts: data ?? []));
       },
     );
     result.ifError(
@@ -77,6 +69,19 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
         emit(state.copyWith(isLoading: false, errorMessage: error));
       },
     );
+  }
+
+  onTapPrompt(EntryModel entry) {
+    if (state.prompts.isNotEmpty) {
+      final prompt = state.prompts.firstWhere((e) => e.id == entry.id);
+      headwordController.text = prompt.headword ?? '';
+      definitionController.text = prompt.definition ?? '';
+      partsOfSpeechController.value = prompt.partsOfSpeech;
+      pronunciationController.text = prompt.pronunciation ?? '';
+      categoryController.text = prompt.category ?? '';
+      topicController.text = prompt.topic ?? '';
+    }
+    emit(state.copyWith(prompts: []));
   }
 
   Future<void> updateEntry() async {

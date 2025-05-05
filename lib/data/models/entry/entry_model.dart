@@ -103,6 +103,7 @@ class EntryModel {
 
   Map<String, dynamic> toJsonAsk() {
     return AppUtils.removeNullValues({
+      'headword': headword,
       'definition': definition,
       'partsOfSpeech': partsOfSpeech?.index,
       'pronunciation': pronunciation,
