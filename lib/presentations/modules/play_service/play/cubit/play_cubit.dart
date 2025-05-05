@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/core.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
 import 'package:meory/domain/usecases/entry/get_entries_usecase.dart';
@@ -20,6 +22,7 @@ class PlayCubit extends CoreCubit<PlayState> {
   PlayCubit() : super(const PlayState());
 
   final countPerBatch = 30;
+  Timer? timerCountAdded;
 
   EntryModel answerSelected = EntryModel();
 
@@ -34,9 +37,13 @@ class PlayCubit extends CoreCubit<PlayState> {
           entries: reset ? entries : [...state.entries, ...entries],
           countAdded: entries.length,
         ));
-        Future.delayed(const Duration(milliseconds: 1000), () {
-          emit(state.copyWith(countAdded: 0));
-        });
+        timerCountAdded?.cancel();
+        timerCountAdded = Timer(
+          const Duration(milliseconds: 1000),
+          () {
+            emit(state.copyWith(countAdded: 0));
+          },
+        );
         if (reset) {
           onIndexChange(0);
         }
@@ -121,5 +128,11 @@ class PlayCubit extends CoreCubit<PlayState> {
     AppNavigator.push(Routes.createEntry, {
       'callback': getEntries,
     });
+  }
+
+  @override
+  Future<void> close() {
+    timerCountAdded?.cancel();
+    return super.close();
   }
 }
