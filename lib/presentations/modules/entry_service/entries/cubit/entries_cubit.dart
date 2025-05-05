@@ -38,8 +38,9 @@ class EntriesCubit extends CoreCubit<EntriesState> {
       return;
     }
     final filteredEntries = state.entries
-        .where(
-            (entry) => entry.headword?.toLowerCase().contains(value.trim().toLowerCase()) ?? false)
+        .where((entry) =>
+            (entry.headword?.toLowerCase().contains(value.trim().toLowerCase()) ?? false) ||
+            (entry.definition?.toLowerCase().contains(value.trim().toLowerCase()) ?? false))
         .toList();
     emit(state.copyWith(entriesSearch: filteredEntries, isSearched: true));
   }

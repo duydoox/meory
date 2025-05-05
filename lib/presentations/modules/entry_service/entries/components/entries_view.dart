@@ -90,6 +90,7 @@ class EntriesView extends BaseWidget<EntriesCubit, EntriesState> {
             Expanded(
               child: cubit.state.isSearched
                   ? ListView.builder(
+                      key: const Key('search_list'),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       itemCount: cubit.state.entriesSearch.length,
                       itemBuilder: (context, index) {
@@ -98,6 +99,7 @@ class EntriesView extends BaseWidget<EntriesCubit, EntriesState> {
                       },
                     )
                   : ListView.builder(
+                      key: const Key('entries_list'),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       itemCount: cubit.state.entries.length,
                       itemBuilder: (context, index) {
