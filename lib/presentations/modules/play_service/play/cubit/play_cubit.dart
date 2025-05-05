@@ -6,6 +6,7 @@ import 'package:meory/domain/usecases/statistical/update_statistical_usecase.dar
 import 'package:meory/presentations/modules/home/cubit/home_cubit.dart';
 import 'package:meory/presentations/routes.dart';
 import 'package:meory/presentations/service/play_service.dart';
+import 'package:meory/presentations/service/tts_service.dart';
 import 'package:meory/presentations/widgets/toast_widget.dart';
 
 part 'play_state.dart';
@@ -101,6 +102,9 @@ class PlayCubit extends CoreCubit<PlayState> {
       isShowAnswer: false,
       randomAnswers: randomAnswers,
     ));
+    TtsService().speak(
+      state.entries.elementAtOrNull(index)?.headword ?? '',
+    );
   }
 
   void onTapAdd() {

@@ -14,6 +14,7 @@ import 'app/app_cubit.dart';
 import 'configs.dart';
 import 'di.dart';
 import 'presentations/routes.dart';
+import 'presentations/service/tts_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +26,7 @@ void main() async {
   await dotenv.load();
   await DependencyInjection.init();
   Configs.configEnvironment();
+  TtsService().init();
   runApp(const App());
 }
 
