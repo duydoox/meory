@@ -1,41 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:meory/presentations/utils/app_utils.dart';
 
-class StatisticalWeekModel {
+class StatisticalDayModel {
   final String? id;
   final String? userId;
   final int? numberOfPlayed;
   final int? numberOfSuccess;
-  final int? score;
   final Timestamp? lastPlayedTime;
-  final int? year;
-  final int? month;
-  final int? week;
+  final Timestamp? date;
 
-  const StatisticalWeekModel({
+  const StatisticalDayModel({
     this.id,
     this.userId,
     this.numberOfPlayed,
     this.numberOfSuccess,
-    this.score,
     this.lastPlayedTime,
-    this.year,
-    this.month,
-    this.week,
+    this.date,
   });
 
-  get createId => 'Statistical_$year/$month/$week';
+  DateTime? get toDate => date?.toDate();
 
-  factory StatisticalWeekModel.fromJson(Map<String, dynamic> json) {
-    return StatisticalWeekModel(
+  get createId => '${userId}_${toDate?.year}_${toDate?.month}_${toDate?.day}';
+
+  factory StatisticalDayModel.fromJson(Map<String, dynamic> json) {
+    return StatisticalDayModel(
       id: json['id'],
       userId: json['userId'],
       numberOfPlayed: json['numberOfPlayed'],
       numberOfSuccess: json['numberOfSuccess'],
-      score: json['score'],
       lastPlayedTime: json['lastPlayedTime'],
-      year: json['year'],
-      month: json['month'],
-      week: json['week'],
+      date: json['date'],
     );
   }
 
@@ -45,36 +39,35 @@ class StatisticalWeekModel {
       'userId': userId,
       'numberOfPlayed': numberOfPlayed,
       'numberOfSuccess': numberOfSuccess,
-      'score': score,
       'lastPlayedTime': lastPlayedTime,
-      'year': year,
-      'month': month,
-      'week': week,
+      'date': date,
     };
   }
 
-  StatisticalWeekModel copyWith({
+  Map<String, dynamic> toJsonUpdate() {
+    return AppUtils.removeNullValues({
+      'userId': userId,
+      'numberOfPlayed': numberOfPlayed,
+      'lastPlayedTime': lastPlayedTime,
+      'date': date,
+    });
+  }
+
+  StatisticalDayModel copyWith({
     String? id,
     String? userId,
     int? numberOfPlayed,
     int? numberOfSuccess,
-    int? score,
     Timestamp? lastPlayedTime,
-    int? streak,
-    int? year,
-    int? month,
-    int? week,
+    Timestamp? date,
   }) {
-    return StatisticalWeekModel(
+    return StatisticalDayModel(
       id: id ?? this.id,
       userId: userId ?? this.userId,
       numberOfPlayed: numberOfPlayed ?? this.numberOfPlayed,
       numberOfSuccess: numberOfSuccess ?? this.numberOfSuccess,
-      score: score ?? this.score,
       lastPlayedTime: lastPlayedTime ?? this.lastPlayedTime,
-      year: year ?? this.year,
-      month: month ?? this.month,
-      week: week ?? this.week,
+      date: date ?? this.date,
     );
   }
 }

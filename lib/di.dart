@@ -30,6 +30,9 @@ import 'package:meory/domain/usecases/statistical/get_statistical_usecase.dart';
 import 'package:meory/domain/usecases/statistical/update_statistical_usecase.dart';
 import 'package:meory/presentations/service/play_service.dart';
 
+import 'domain/usecases/statistical/get_list_statistical_by_day_usecase.dart';
+import 'domain/usecases/statistical/get_statistical_by_day_usecase.dart';
+
 final class DependencyInjection {
   static Future<void> init() async {
     await Di().init();
@@ -82,6 +85,10 @@ final class DependencyInjection {
         GetStatisticalUseCase(getIt.get<StatisticalRepo>()));
     getIt.registerSingleton<UpdateStatisticalUseCase>(
         UpdateStatisticalUseCase(getIt.get<StatisticalRepo>()));
+    getIt.registerSingleton<GetListStatisticalByDayUseCase>(
+        GetListStatisticalByDayUseCase(getIt.get<StatisticalRepo>()));
+    getIt.registerSingleton<GetStatisticalByDayUseCase>(
+        GetStatisticalByDayUseCase(getIt.get<StatisticalRepo>()));
 
     //openai
     getIt.registerSingleton<GetPromptWordUseCase>(GetPromptWordUseCase(getIt.get<OpenaiRepo>()));

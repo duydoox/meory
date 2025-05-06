@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meory/app/app_cubit.dart';
 import 'package:meory/presentations/modules/home/components/home_listener.dart';
 import 'package:meory/presentations/modules/home/cubit/home_cubit.dart';
+import 'package:meory/presentations/modules/statistic/components/statistic_chart.dart';
 import 'package:meory/presentations/routes.dart';
 import 'package:meory/presentations/widgets/base_widget.dart';
 import 'package:meory/presentations/widgets/button_widget/primary_button.dart';
@@ -43,8 +44,15 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
                     const SizedBox(height: 24),
                     _buildQuickActions(theme, context, cubit),
                     const SizedBox(height: 24),
-                    // _buildRecentWords(theme),
-                    const SizedBox(height: 100), // Space for FAB
+                    if (cubit.state.listStatisticalByDay.isNotEmpty) ...[
+                      Text(
+                        'Statistical',
+                        style: AppTextStyle.s18w600.copyWith(color: theme.colors.primaryText),
+                      ),
+                      StatisticChart(listStatisticalByDay: cubit.state.listStatisticalByDay),
+                    ],
+
+                    const SizedBox(height: 40), // Space for FAB
                   ],
                 ),
               ),

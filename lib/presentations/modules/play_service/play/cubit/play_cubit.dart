@@ -23,6 +23,7 @@ class PlayCubit extends CoreCubit<PlayState> {
 
   final countPerBatch = 30;
   Timer? timerCountAdded;
+  Timer? timerNext;
 
   EntryModel answerSelected = EntryModel();
 
@@ -94,8 +95,12 @@ class PlayCubit extends CoreCubit<PlayState> {
     answerSelected = entry;
     emit(state.copyWith(isShowAnswer: true));
     updateResult(entry);
-    await Future.delayed(const Duration(milliseconds: 1000));
-    onIndexChange(state.currentIndex + 1);
+    timerNext = Timer(
+      const Duration(milliseconds: 1000),
+      () {
+        onIndexChange(state.currentIndex + 1);
+      },
+    );
   }
 
   Future<void> onIndexChange(int index) async {
@@ -133,6 +138,7 @@ class PlayCubit extends CoreCubit<PlayState> {
   @override
   Future<void> close() {
     timerCountAdded?.cancel();
+    timerNext?.cancel();
     return super.close();
   }
 }

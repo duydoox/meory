@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meory/app/app_cubit.dart';
 import 'package:meory/data/models/home/home_model.dart';
+import 'package:meory/data/models/statistical_week/statistical_day_model.dart';
 import 'package:meory/data/models/statistical_week/statistical_model.dart';
 import 'package:meory/domain/usecases/entry/count_entries_usecase.dart';
 import 'package:meory/domain/usecases/entry/count_mastered_usecase.dart';
+import 'package:meory/domain/usecases/statistical/get_list_statistical_by_day_usecase.dart';
 import 'package:meory/domain/usecases/statistical/get_statistical_usecase.dart';
 import 'package:meory/presentations/routes.dart';
 import 'package:meory/presentations/widgets/button_widget/primary_button.dart';
@@ -17,6 +19,7 @@ class HomeCubit extends CoreCubit<HomeState> {
   final _countEntriesUseCase = getIt<CountEntriesUseCase>();
   final _countMasteredUseCase = getIt<CountMasteredUseCase>();
   final _getStatisticalUseCase = getIt<GetStatisticalUseCase>();
+  final _getListStatisticByDay = getIt<GetListStatisticalByDayUseCase>();
   HomeCubit() : super(const HomeState());
 
   static bool neededRefreshData = false;
@@ -26,8 +29,17 @@ class HomeCubit extends CoreCubit<HomeState> {
     final result = _countEntriesUseCase.execute();
     final masteredResult = _countMasteredUseCase.execute();
     final statisticalResult = _getStatisticalUseCase.execute();
-    final data = await Future.wait([result, masteredResult, statisticalResult]);
-    if (data[0].isSuccess && data[1].isSuccess && data[2].isSuccess) {
+    final listStatisticalResult = _getListStatisticByDay.execute(
+      startDate: DateTime.now().subtract(const Duration(days: 7)),
+      endDate: DateTime.now(),
+    );
+    final data = await Future.wait([
+      result,
+      masteredResult,
+      statisticalResult,
+      listStatisticalResult,
+    ]);
+    if (data.every((element) => element.isSuccess)) {
       emit(
         state.copyWith(
           isLoading: false,
@@ -36,6 +48,7 @@ class HomeCubit extends CoreCubit<HomeState> {
             masteredEntries: (data[1].data as int?) ?? state.homeData.masteredEntries,
           ),
           statisticalModel: (data[2].data as StatisticalModel?) ?? state.statisticalModel,
+          listStatisticalByDay: (data[3].data as List<StatisticalDayModel>?) ?? [],
         ),
       );
     } else {

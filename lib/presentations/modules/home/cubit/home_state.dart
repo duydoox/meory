@@ -3,11 +3,13 @@ part of 'home_cubit.dart';
 class HomeState extends CoreState {
   final HomeModel homeData;
   final StatisticalModel statisticalModel;
+  final List<StatisticalDayModel> listStatisticalByDay;
   const HomeState({
     bool isLoading = false,
     String errorMessage = '',
     this.homeData = const HomeModel(),
     this.statisticalModel = const StatisticalModel(),
+    this.listStatisticalByDay = const [],
   }) : super(
           isLoading: isLoading,
           errorMessage: errorMessage,
@@ -20,12 +22,14 @@ class HomeState extends CoreState {
     int? pageIndex,
     HomeModel? homeData,
     StatisticalModel? statisticalModel,
+    List<StatisticalDayModel>? listStatisticalByDay,
   }) {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
       homeData: homeData ?? this.homeData,
       statisticalModel: statisticalModel ?? this.statisticalModel,
+      listStatisticalByDay: listStatisticalByDay ?? this.listStatisticalByDay,
     );
   }
 
@@ -35,5 +39,6 @@ class HomeState extends CoreState {
         errorMessage,
         homeData,
         statisticalModel,
+        listStatisticalByDay,
       ];
 }
