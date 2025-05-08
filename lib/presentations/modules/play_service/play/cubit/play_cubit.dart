@@ -29,7 +29,7 @@ class PlayCubit extends CoreCubit<PlayState> {
 
   Future<void> getEntries([bool reset = true]) async {
     emit(state.copyWith(isLoading: reset, errorMessage: ''));
-    final result = await _getEntriesUseCase.execute();
+    final result = await _getEntriesUseCase.execute(limit: 500);
     result.ifSuccess(
       (data) {
         final entries = _playService.getTopImportantEntries(data ?? [], take: countPerBatch);

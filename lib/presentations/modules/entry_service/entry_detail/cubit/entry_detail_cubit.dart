@@ -2,7 +2,9 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
 import 'package:meory/domain/usecases/entry/delete_entry_usecase.dart';
+import 'package:meory/presentations/modules/home/cubit/home_cubit.dart';
 import 'package:meory/presentations/routes.dart';
+import 'package:meory/presentations/widgets/toast_widget.dart';
 
 part 'entry_detail_state.dart';
 
@@ -18,6 +20,10 @@ class EntryDetailCubit extends CoreCubit<EntryDetailState> {
     final result = await _deleteEntryUseCase.execute(entryId: entry.id ?? '');
     result.ifSuccess(
       (data) {
+        HomeCubit.neededRefreshData = true;
+        Toast.showSuccess(
+          "Entry deleted successfully",
+        );
         callback?.call();
         emit(state.copyWith(isLoading: false));
         AppNavigator.pop();

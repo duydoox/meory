@@ -122,7 +122,7 @@ class _InputTextState extends State<InputText> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: widget.height ?? 48,
+                height: widget.height,
                 child: TextField(
                   enabled: widget.enabled,
                   controller: _textEditingController,
