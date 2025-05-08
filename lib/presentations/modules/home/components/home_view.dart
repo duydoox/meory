@@ -43,8 +43,8 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
                     _buildStatsCard(theme, cubit),
                     const SizedBox(height: 24),
                     _buildQuickActions(theme, context, cubit),
-                    const SizedBox(height: 24),
                     if (cubit.state.listStatisticalByDay.isNotEmpty) ...[
+                      const SizedBox(height: 24),
                       Text(
                         'Statistical',
                         style: AppTextStyle.s18w600.copyWith(color: theme.colors.primaryText),
@@ -52,7 +52,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
                       StatisticChart(listStatisticalByDay: cubit.state.listStatisticalByDay),
                     ],
 
-                    const SizedBox(height: 40), // Space for FAB
+                    const SizedBox(height: 60), // Space for FAB
                   ],
                 ),
               ),

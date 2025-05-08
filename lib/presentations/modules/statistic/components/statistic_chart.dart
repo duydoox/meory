@@ -121,7 +121,7 @@ class ChartPainter extends CustomPainter {
       chartWidth,
       chartHeight,
       scale,
-      theme.colors.green,
+      theme.colors.blueText,
     );
 
     // Draw legend
@@ -131,7 +131,7 @@ class ChartPainter extends CustomPainter {
   void _drawGrid(Canvas canvas, Size size, double padding, double chartWidth, double chartHeight,
       double maxPlayed) {
     final paint = Paint()
-      ..color = theme.colors.hintText
+      ..color = theme.colors.primary.withOpacity(0.3)
       ..strokeWidth = 1;
 
     final int labelScale = (maxPlayed / 4).floor();
@@ -296,7 +296,7 @@ class ChartPainter extends CustomPainter {
       canvas,
       Offset(padding + 80, padding - 20),
       'Success',
-      theme.colors.green,
+      theme.colors.blueText,
       textStyle,
     );
   }
