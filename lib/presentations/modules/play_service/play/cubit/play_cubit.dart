@@ -26,12 +26,14 @@ class PlayCubit extends CoreCubit<PlayState> {
   Timer? timerNext;
 
   EntryModel answerSelected = EntryModel();
+  List<EntryModel> dataEntries = [];
 
   Future<void> getEntries([bool reset = true]) async {
     emit(state.copyWith(isLoading: reset, errorMessage: ''));
     final result = await _getEntriesUseCase.execute(limit: 500);
     result.ifSuccess(
       (data) {
+        dataEntries = data ?? [];
         final entries = _playService.getTopImportantEntries(data ?? [], take: countPerBatch);
         emit(state.copyWith(
           isLoading: false,
@@ -112,7 +114,7 @@ class PlayCubit extends CoreCubit<PlayState> {
       getEntries(false);
     }
     final randomAnswers = await _playService.getRandomEntry(
-      state.entries,
+      dataEntries,
       defaultEntry: state.entries.elementAtOrNull(index),
     );
     emit(state.copyWith(
