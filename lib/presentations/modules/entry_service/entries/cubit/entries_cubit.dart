@@ -18,6 +18,9 @@ class EntriesCubit extends CoreCubit<EntriesState> {
     result.ifSuccess(
       (data) {
         emit(state.copyWith(isLoading: false, entries: data));
+        if (state.isSearched) {
+          onSearch(searchController.text);
+        }
       },
     );
     result.ifError(

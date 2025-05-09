@@ -37,6 +37,21 @@ class EntryRepoImpl extends BaseRepository with EntryRepo {
   }
 
   @override
+  Future<Result<List<EntryModel>>> getEntriesByHeadword({required String headword}) async {
+    try {
+      final snapshot = await firestore
+          .collection(FireBaseConllection.entries)
+          .where('userId', isEqualTo: fireAuth.currentUser?.uid)
+          .where('headword', isEqualTo: headword.trim())
+          .get();
+      return Result.success(
+          snapshot.docs.map((doc) => EntryModel.fromJson({...doc.data(), 'id': doc.id})).toList());
+    } catch (e) {
+      return Result.error(e.toString(), '');
+    }
+  }
+
+  @override
   Future<Result<String>> createEntry({required EntryModel entry}) async {
     try {
       final snapshot = await firestore.collection(FireBaseConllection.entries).add({

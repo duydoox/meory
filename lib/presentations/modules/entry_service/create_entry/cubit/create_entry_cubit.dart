@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
 import 'package:meory/domain/usecases/entry/create_entry_usecase.dart';
+import 'package:meory/domain/usecases/entry/get_entries_by_headword_usecase.dart';
 import 'package:meory/domain/usecases/entry/update_entry_usecase.dart';
 import 'package:meory/domain/usecases/openai/get_prompt_word_usecase.dart';
 import 'package:meory/presentations/modules/home/cubit/home_cubit.dart';
@@ -15,6 +16,7 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
   final _createEntryUseCase = getIt<CreateEntryUseCase>();
   final _updateEntryUseCase = getIt<UpdateEntryUseCase>();
   final _getPromptWordUseCase = getIt<GetPromptWordUseCase>();
+  final _getEntriesByHeadwordUseCase = getIt<GetEntriesByHeadwordUseCase>();
 
   CreateEntryCubit({this.callback, this.entry}) : super(const CreateEntryState());
 
@@ -49,7 +51,7 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
     if (isEdit) {
       updateEntry();
     } else {
-      createEntry();
+      checkForCreate();
     }
   }
 
@@ -121,12 +123,35 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
     );
   }
 
-  Future<void> createEntry() async {
-    if (headwordController.text.isEmpty) {
+  Future<void> checkForCreate() async {
+    if (headwordController.text.trim().isEmpty) {
       Toast.showError("Headword cannot be empty");
       return;
     }
-    if (definitionController.text.isEmpty) {
+    if (definitionController.text.trim().isEmpty) {
+      Toast.showError("Definition cannot be empty");
+      return;
+    }
+    emit(state.copyWith(isLoading: true, errorMessage: ''));
+    final entriesResult = await _getEntriesByHeadwordUseCase.execute(
+      headword: headwordController.text.trim(),
+    );
+    if (entriesResult.isSuccess) {
+      final entries = entriesResult.data ?? [];
+      if (entries.isNotEmpty) {
+        emit(state.copyWith(isLoading: false, entriesExist: entries));
+        return;
+      }
+    }
+    await createEntry();
+  }
+
+  Future<void> createEntry() async {
+    if (headwordController.text.trim().isEmpty) {
+      Toast.showError("Headword cannot be empty");
+      return;
+    }
+    if (definitionController.text.trim().isEmpty) {
       Toast.showError("Definition cannot be empty");
       return;
     }

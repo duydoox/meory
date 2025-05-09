@@ -20,6 +20,7 @@ import 'package:meory/domain/usecases/entry/count_entries_usecase.dart';
 import 'package:meory/domain/usecases/entry/count_mastered_usecase.dart';
 import 'package:meory/domain/usecases/entry/create_entry_usecase.dart';
 import 'package:meory/domain/usecases/entry/delete_entry_usecase.dart';
+import 'package:meory/domain/usecases/entry/get_entries_by_headword_usecase.dart';
 import 'package:meory/domain/usecases/entry/get_entries_usecase.dart';
 import 'package:meory/domain/usecases/entry/get_entry_usecase.dart';
 import 'package:meory/domain/usecases/entry/get_home_entries_usecase.dart';
@@ -73,6 +74,8 @@ final class DependencyInjection {
     //entry
     getIt.registerSingleton<CreateEntryUseCase>(CreateEntryUseCase(getIt.get<EntryRepo>()));
     getIt.registerSingleton<GetEntriesUseCase>(GetEntriesUseCase(getIt.get<EntryRepo>()));
+    getIt.registerSingleton<GetEntriesByHeadwordUseCase>(
+        GetEntriesByHeadwordUseCase(getIt.get<EntryRepo>()));
     getIt.registerSingleton<GetEntryUseCase>(GetEntryUseCase(getIt.get<EntryRepo>()));
     getIt.registerSingleton<UpdateEntryUseCase>(UpdateEntryUseCase(getIt.get<EntryRepo>()));
     getIt.registerSingleton<DeleteEntryUseCase>(DeleteEntryUseCase(getIt.get<EntryRepo>()));

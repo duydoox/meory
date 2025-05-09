@@ -6,6 +6,8 @@ mixin EntryRepo {
 
   Future<Result<EntryModel>> getEntry({required String entryId});
 
+  Future<Result<List<EntryModel>>> getEntriesByHeadword({required String headword});
+
   Future<Result<String>> createEntry({required EntryModel entry});
 
   Future<Result<bool>> updateEntry({

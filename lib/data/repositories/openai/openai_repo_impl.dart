@@ -60,7 +60,7 @@ class OpenaiRepoImpl extends BaseRepository with OpenaiRepo {
     final explain =
         "partsOfSpeech là index của mảng sau ${PartsOfSpeechE.values.map((e) => e.name).toList().toString()}, definition là nghĩa của từ được dịch sang tiếng Việt (viết ngắn gọn), headword là từ đang tìm (nếu từ đang tìm ghi sai chính tả thì hãy gợi ý thành từ đúng), category và topic điền tiếng việt phù hợp";
     final ask =
-        "Giải thích: $explain. Câu hỏi: Hãy dịch từ $word sang tiếng Việt. Trả lời bằng JSON với cấu trúc: [$struct]. Nếu từ $word có nhiều nghĩa thì bạn cho nhiều trả lời vào mảng, tối đa 3 nghĩa. Trả về JSON thuần, không markdown.";
+        "Giải thích: $explain. Câu hỏi: Hãy dịch từ \"$word\" sang tiếng Việt. Trả lời bằng JSON với cấu trúc: [$struct]. Nếu từ $word có nhiều nghĩa thì bạn cho nhiều trả lời vào mảng, tối đa 3 nghĩa. Trả về JSON thuần, không markdown.";
     final apiKey = dotenv.env['API_KEY'];
     final url =
         'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$apiKey';

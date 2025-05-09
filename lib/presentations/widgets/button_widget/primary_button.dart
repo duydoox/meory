@@ -7,6 +7,7 @@ import 'package:meory/presentations/widgets/base_widget.dart';
 class PrimaryButton extends BaseWidget {
   final Color? backgroundColor;
   final String? title;
+  final Color? titleColor;
   final VoidCallback? onTap;
   final bool disable;
   final Widget? icon;
@@ -17,6 +18,7 @@ class PrimaryButton extends BaseWidget {
 
   const PrimaryButton({
     this.title,
+    this.titleColor,
     this.onTap,
     this.disable = false,
     this.icon,
@@ -46,7 +48,7 @@ class PrimaryButton extends BaseWidget {
                   width: width,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(borderRadius ?? 8),
-                      border: Border.all(color: theme.colors.border),
+                      border: Border.all(color: theme.colors.primary),
                       color: backgroundColor ?? theme.colors.primary),
                   //alignment: Alignment.center,
                   padding: padding,
@@ -63,7 +65,7 @@ class PrimaryButton extends BaseWidget {
                         child: Text(
                           title ?? '',
                           style: AppTextStyle.s16w700.copyWith(
-                            color: theme.colors.secondaryText,
+                            color: titleColor ?? theme.colors.secondaryText,
                           ),
                         ),
                       ),

@@ -34,10 +34,14 @@ class CreateEntryView extends BaseWidget<CreateEntryCubit, CreateEntryState> {
         elevation: 0,
       ),
       body: BlocListener<CreateEntryCubit, CreateEntryState>(
-        listenWhen: (previous, current) => previous.prompts != current.prompts,
+        listenWhen: (previous, current) =>
+            previous.prompts != current.prompts || previous.entriesExist != current.entriesExist,
         listener: (context, state) {
           if (state.prompts.isNotEmpty) {
             _showPromptsDialog(cubit, theme, context);
+          }
+          if (state.entriesExist.isNotEmpty) {
+            _showEntriesExist(cubit, theme, context);
           }
         },
         child: SingleChildScrollView(
@@ -153,7 +157,7 @@ class CreateEntryView extends BaseWidget<CreateEntryCubit, CreateEntryState> {
                   children: [
                     Expanded(
                       child: Text(
-                        'Suggested Words',
+                        'Gợi ý',
                         style: AppTextStyle.s18w600.copyWith(
                           color: theme.colors.primary,
                         ),
@@ -175,74 +179,7 @@ class CreateEntryView extends BaseWidget<CreateEntryCubit, CreateEntryState> {
                         cubit.onTapPrompt(prompt);
                         Navigator.pop(context);
                       },
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          border: index != cubit.state.prompts.length - 1
-                              ? Border(
-                                  bottom: BorderSide(
-                                    color: theme.colors.primary.withOpacity(0.1),
-                                  ),
-                                )
-                              : null,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    prompt.headword ?? '',
-                                    style: AppTextStyle.s18w600.copyWith(
-                                      color: theme.colors.primary,
-                                    ),
-                                  ),
-                                ),
-                                if (prompt.partsOfSpeech != null)
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: theme.colors.primary.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Text(
-                                      prompt.partsOfSpeech!.short,
-                                      style: AppTextStyle.s12w400.copyWith(
-                                        color: theme.colors.primary,
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                            if (prompt.pronunciation != null)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: Text(
-                                  AppUtils.showPronunciation(prompt.pronunciation),
-                                  style: AppTextStyle.s14w400.copyWith(
-                                    color: theme.colors.greyText,
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                ),
-                              ),
-                            if (prompt.definition != null)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: Text(
-                                  prompt.definition!,
-                                  style: AppTextStyle.s14w400.copyWith(
-                                    color: theme.colors.blackText,
-                                    height: 1.4,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
+                      child: _buildEntriesItem(prompt, cubit, theme),
                     );
                   },
                 ),
@@ -250,6 +187,153 @@ class CreateEntryView extends BaseWidget<CreateEntryCubit, CreateEntryState> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _showEntriesExist(CreateEntryCubit cubit, AppTheme theme, BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Container(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.9,
+            maxWidth: MediaQuery.of(context).size.width * 0.9,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Tìm thấy từ vựng đã tồn tại',
+                        style: AppTextStyle.s18w600.copyWith(
+                          color: theme.colors.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(color: theme.colors.primary.withOpacity(0.1)),
+              Flexible(
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  itemCount: cubit.state.entriesExist.length,
+                  itemBuilder: (context, index) {
+                    final entry = cubit.state.entriesExist[index];
+                    return _buildEntriesItem(entry, cubit, theme);
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: PrimaryButton(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        title: 'Đóng',
+                        backgroundColor: theme.colors.white,
+                        titleColor: theme.colors.primaryText,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: PrimaryButton(
+                        onTap: () {
+                          Navigator.pop(context);
+                          cubit.createEntry();
+                        },
+                        title: 'Thêm mới',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildEntriesItem(EntryModel entry, CreateEntryCubit cubit, AppTheme theme) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: theme.colors.primary.withOpacity(0.1),
+          ),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  entry.headword ?? '',
+                  style: AppTextStyle.s18w600.copyWith(
+                    color: theme.colors.primary,
+                  ),
+                ),
+              ),
+              if (entry.partsOfSpeech != null)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    entry.partsOfSpeech!.short,
+                    style: AppTextStyle.s12w400.copyWith(
+                      color: theme.colors.primary,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          if (entry.pronunciation != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                AppUtils.showPronunciation(entry.pronunciation),
+                style: AppTextStyle.s14w400.copyWith(
+                  color: theme.colors.greyText,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          if (entry.definition != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                entry.definition!,
+                style: AppTextStyle.s14w400.copyWith(
+                  color: theme.colors.blackText,
+                  height: 1.4,
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
