@@ -92,8 +92,48 @@ class StatisticalRepoImpl extends BaseRepository with StatisticalRepo {
             ),
           )
           .get();
-      return Result.success(
-          snapshot.docs.map((doc) => StatisticalDayModel.fromJson(doc.data())).toList());
+      final data = snapshot.docs.map((doc) => StatisticalDayModel.fromJson(doc.data())).toList();
+      data.sort((a, b) => a.date?.compareTo(b.date ?? Timestamp.now()) ?? 0);
+      if (data.last.toDate != null && endDate != null) {
+        data.addAll(
+          List.generate(
+            endDate.difference(data.last.toDate!).inDays,
+            (index) => StatisticalDayModel(
+              date: Timestamp.fromDate(
+                data.last.toDate!.add(Duration(days: index + 1)),
+              ),
+              numberOfPlayed: 0,
+              numberOfSuccess: 0,
+            ),
+          ),
+        );
+      }
+      for (int i = 0; i < data.length - 1; i++) {
+        if (data[i].toDate == null || data[i + 1].toDate == null) {
+          continue;
+        }
+        final date = DateTime(
+          data[i].toDate!.year,
+          data[i].toDate!.month,
+          data[i].toDate!.day + 1,
+        );
+        final dateNext = DateTime(
+          data[i + 1].toDate!.year,
+          data[i + 1].toDate!.month,
+          data[i + 1].toDate!.day,
+        );
+        if (date.isAtSameMomentAs(dateNext)) {
+          continue;
+        }
+        data.insert(
+            i + 1,
+            StatisticalDayModel(
+              date: Timestamp.fromDate(date),
+              numberOfPlayed: 0,
+              numberOfSuccess: 0,
+            ));
+      }
+      return Result.success(data);
     } catch (e) {
       return Result.error(e.toString(), '');
     }
