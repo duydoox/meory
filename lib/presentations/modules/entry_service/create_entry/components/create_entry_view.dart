@@ -7,6 +7,7 @@ import 'package:meory/presentations/widgets/base_widget.dart';
 import 'package:meory/presentations/widgets/button_widget/primary_button.dart';
 import 'package:meory/presentations/widgets/input_dropdown/input_dropdown.dart';
 import 'package:meory/presentations/widgets/input_text/input_text.dart';
+import 'package:meory/presentations/widgets/text_highlight.dart';
 
 import '../cubit/create_entry_cubit.dart';
 
@@ -98,11 +99,11 @@ class CreateEntryView extends BaseWidget<CreateEntryCubit, CreateEntryState> {
                   controller: cubit.topicController,
                 ),
                 const SizedBox(height: 8),
-                _buildSectionTitle('Mô tả', theme),
+                _buildSectionTitle('Ví dụ', theme),
                 const SizedBox(height: 4),
                 InputText(
-                  hintText: 'Nhập mô tả',
-                  controller: cubit.descriptionController,
+                  hintText: 'Nhập ví dụ',
+                  controller: cubit.exampleController,
                 ),
                 const SizedBox(height: 8),
                 _buildSectionTitle('Ghi chú', theme),
@@ -332,6 +333,15 @@ class CreateEntryView extends BaseWidget<CreateEntryCubit, CreateEntryState> {
                   height: 1.4,
                 ),
               ),
+            ),
+          if (entry.example != null)
+            TextHighlight(
+              text: '"${entry.example}"',
+              highlightText: entry.headword ?? '',
+              textStyle: AppTextStyle.s12w400
+                  .copyWith(color: theme.colors.primary, fontStyle: FontStyle.italic),
+              highlightStyle: AppTextStyle.s12w600
+                  .copyWith(color: theme.colors.red, fontStyle: FontStyle.italic),
             ),
         ],
       ),

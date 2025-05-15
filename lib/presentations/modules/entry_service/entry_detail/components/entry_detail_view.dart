@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meory/presentations/utils/app_utils.dart';
 import 'package:meory/presentations/widgets/base_widget.dart';
+import 'package:meory/presentations/widgets/text_highlight.dart';
 
 import '../cubit/entry_detail_cubit.dart';
 
@@ -97,13 +98,14 @@ class EntryDetailView extends BaseWidget<EntryDetailCubit, EntryDetailState> {
                     label: 'Định nghĩa:',
                     content: cubit.entry.definition ?? '',
                   ),
-                  if (cubit.entry.description != null && cubit.entry.description!.isNotEmpty) ...[
+                  if (cubit.entry.example != null && cubit.entry.example!.isNotEmpty) ...[
                     const SizedBox(height: 24),
                     _buildInfoRow(
                       theme,
                       icon: Icons.info_outline,
-                      label: 'Mô tả:',
-                      content: cubit.entry.description!,
+                      label: 'Ví dụ:',
+                      content: cubit.entry.example!,
+                      contentHighlight: cubit.entry.headword,
                     ),
                   ],
                   if (cubit.entry.note != null && cubit.entry.note!.isNotEmpty) ...[
@@ -156,6 +158,7 @@ class EntryDetailView extends BaseWidget<EntryDetailCubit, EntryDetailState> {
     required IconData icon,
     required String label,
     required String content,
+    String? contentHighlight,
     TextStyle? contentStyle,
   }) {
     return Container(
@@ -185,13 +188,18 @@ class EntryDetailView extends BaseWidget<EntryDetailCubit, EntryDetailState> {
           const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.only(left: 28),
-            child: Text(
-              content,
-              style: contentStyle ??
+            child: TextHighlight(
+              text: content,
+              highlightText: contentHighlight ?? 'eiuhf',
+              textStyle: contentStyle ??
                   AppTextStyle.s16w400.copyWith(
                     color: theme.colors.blackText,
                     height: 1.5,
                   ),
+              highlightStyle: AppTextStyle.s16w600.copyWith(
+                color: theme.colors.primaryText,
+                height: 1.5,
+              ),
             ),
           ),
         ],

@@ -5,6 +5,7 @@ import 'package:meory/data/models/entry/entry_model.dart';
 import 'package:meory/presentations/utils/app_utils.dart';
 import 'package:meory/presentations/widgets/base_widget.dart';
 import 'package:meory/presentations/widgets/button_widget/primary_button.dart';
+import 'package:meory/presentations/widgets/text_highlight.dart';
 
 import '../cubit/play_cubit.dart';
 
@@ -62,7 +63,7 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
                     _buildSpeakButton(cubit, theme),
                     const SizedBox(height: 8),
                     _buildAnswerOptions(cubit, currentEntry, theme, context),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
@@ -137,6 +138,7 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
   Widget _buildQuestionCard(EntryModel? currentEntry, AppTheme theme) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 32),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: theme.colors.primary.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
@@ -180,6 +182,21 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
               ),
             ),
           ],
+          if (currentEntry?.example != null && currentEntry!.score! < 75) ...[
+            const SizedBox(height: 16),
+            TextHighlight(
+              text: '"${currentEntry.example}"',
+              highlightText: currentEntry.headword ?? 'dsfsdfsdc',
+              textStyle: AppTextStyle.s16w400.copyWith(
+                color: theme.colors.primary,
+                fontStyle: FontStyle.italic,
+              ),
+              highlightStyle: AppTextStyle.s16w600.copyWith(
+                color: theme.colors.red,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ]
         ],
       ),
     );
@@ -222,48 +239,63 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
             ),
           ),
           const SizedBox(height: 16),
-          Wrap(
-            spacing: 16,
-            runSpacing: 16,
-            children: cubit.state.randomAnswers.map((entry) {
-              final isCorrect = entry.id == currentEntry?.id;
-              final isSelected = entry.id == cubit.answerSelected.id;
+          Column(
+            children: [
+              ...List.generate(
+                (cubit.state.randomAnswers.length / 2).ceil(),
+                (index) {
+                  return IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: cubit.state.randomAnswers
+                          .sublist((index) * 2, (index) * 2 + 2)
+                          .map((entry) {
+                        final isCorrect = entry.id == currentEntry?.id;
+                        final isSelected = entry.id == cubit.answerSelected.id;
 
-              return GestureDetector(
-                onTap: cubit.state.isShowAnswer ? null : () => cubit.onTapAnswer(entry),
-                child: Container(
-                  width: Utils.getWidth(context) / 2 - 24,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: cubit.state.isShowAnswer
-                        ? isSelected
-                            ? isCorrect
-                                ? theme.colors.green.withOpacity(0.9)
-                                : theme.colors.red.withOpacity(0.9)
-                            : isCorrect
-                                ? theme.colors.green.withOpacity(0.9)
-                                : theme.colors.primary.withOpacity(0.9)
-                        : theme.colors.primary.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: theme.colors.primary.withOpacity(0.2),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Text(
-                    entry.definition ?? '',
-                    textAlign: TextAlign.center,
-                    style: AppTextStyle.s16w500.copyWith(
-                      color: theme.colors.white,
-                      height: 1.4,
+                        return Expanded(
+                          child: GestureDetector(
+                            onTap: cubit.state.isShowAnswer ? null : () => cubit.onTapAnswer(entry),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                              margin: const EdgeInsets.only(bottom: 12, right: 6, left: 6),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: cubit.state.isShowAnswer
+                                    ? isSelected
+                                        ? isCorrect
+                                            ? theme.colors.green.withOpacity(0.9)
+                                            : theme.colors.red.withOpacity(0.9)
+                                        : isCorrect
+                                            ? theme.colors.green.withOpacity(0.9)
+                                            : theme.colors.primary.withOpacity(0.9)
+                                    : theme.colors.primary.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: theme.colors.primary.withOpacity(0.3),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Text(
+                                entry.definition ?? '',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyle.s16w500.copyWith(
+                                  color: theme.colors.white,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
-                  ),
-                ),
-              );
-            }).toList(),
+                  );
+                },
+              ),
+            ],
           ),
         ],
       ),

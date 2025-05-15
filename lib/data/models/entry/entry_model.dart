@@ -8,7 +8,7 @@ class EntryModel {
   final PartsOfSpeechE? partsOfSpeech;
   final String? pronunciation;
   final String? category;
-  final String? description;
+  final String? example;
   final String? note;
   final String? topic;
   final Timestamp? createdAt;
@@ -26,7 +26,7 @@ class EntryModel {
     this.partsOfSpeech,
     this.pronunciation,
     this.category,
-    this.description,
+    this.example,
     this.note,
     this.topic,
     this.userId,
@@ -47,7 +47,7 @@ class EntryModel {
           json['partsOfSpeech'] != null ? PartsOfSpeechE.values[json['partsOfSpeech']] : null,
       pronunciation: json['pronunciation'],
       category: json['category'],
-      description: json['description'],
+      example: json['example'],
       note: json['note'],
       topic: json['topic'],
       createdAt: json['createdAt'],
@@ -68,7 +68,7 @@ class EntryModel {
       'partsOfSpeech': partsOfSpeech?.index,
       'pronunciation': pronunciation,
       'category': category,
-      'description': description,
+      'example': example,
       'note': note,
       'topic': topic,
       'createdAt': createdAt,
@@ -88,7 +88,7 @@ class EntryModel {
       'partsOfSpeech': partsOfSpeech?.index,
       'pronunciation': pronunciation,
       'category': category,
-      'description': description,
+      'example': example,
       'note': note,
       'topic': topic,
       'createdAt': createdAt,
@@ -109,6 +109,7 @@ class EntryModel {
       'pronunciation': pronunciation,
       'category': category,
       'topic': topic,
+      'example': example,
     });
   }
 
@@ -119,7 +120,7 @@ class EntryModel {
     PartsOfSpeechE? partsOfSpeech,
     String? pronunciation,
     String? category,
-    String? description,
+    String? example,
     String? note,
     String? topic,
     Timestamp? createdAt,
@@ -137,7 +138,7 @@ class EntryModel {
       partsOfSpeech: partsOfSpeech ?? this.partsOfSpeech,
       pronunciation: pronunciation ?? this.pronunciation,
       category: category ?? this.category,
-      description: description ?? this.description,
+      example: example ?? this.example,
       note: note ?? this.note,
       topic: topic ?? this.topic,
       createdAt: createdAt ?? this.createdAt,

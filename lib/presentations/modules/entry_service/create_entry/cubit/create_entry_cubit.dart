@@ -30,7 +30,7 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
   final partsOfSpeechController = InputController<PartsOfSpeechE>(null);
   final pronunciationController = TextEditingController();
   final categoryController = TextEditingController();
-  final descriptionController = TextEditingController();
+  final exampleController = TextEditingController();
   final noteController = TextEditingController();
   final topicController = TextEditingController();
 
@@ -41,7 +41,7 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
       partsOfSpeechController.value = entry?.partsOfSpeech;
       pronunciationController.text = entry?.pronunciation ?? '';
       categoryController.text = entry?.category ?? '';
-      descriptionController.text = entry?.description ?? '';
+      exampleController.text = entry?.example ?? '';
       noteController.text = entry?.note ?? '';
       topicController.text = entry?.topic ?? '';
     }
@@ -80,6 +80,7 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
     pronunciationController.text = prompt.pronunciation ?? '';
     categoryController.text = prompt.category ?? '';
     topicController.text = prompt.topic ?? '';
+    exampleController.text = prompt.example ?? '';
     emit(state.copyWith(prompts: []));
   }
 
@@ -101,7 +102,7 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
         partsOfSpeech: partsOfSpeechController.value,
         pronunciation: pronunciationController.text,
         category: categoryController.text,
-        description: descriptionController.text,
+        example: exampleController.text,
         note: noteController.text,
         topic: topicController.text,
       ),
@@ -113,6 +114,7 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
         );
         callback?.call();
         emit(state.copyWith(isLoading: false));
+        AppNavigator.pop();
         AppNavigator.pop();
       },
     );
@@ -163,7 +165,7 @@ class CreateEntryCubit extends CoreCubit<CreateEntryState> {
         partsOfSpeech: partsOfSpeechController.value,
         pronunciation: pronunciationController.text,
         category: categoryController.text,
-        description: descriptionController.text,
+        example: exampleController.text,
         note: noteController.text,
         topic: topicController.text,
       ),
