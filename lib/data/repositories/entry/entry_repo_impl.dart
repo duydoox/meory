@@ -124,7 +124,7 @@ class EntryRepoImpl extends BaseRepository with EntryRepo {
       final snapshot = await firestore
           .collection(FireBaseConllection.entries)
           .where('userId', isEqualTo: fireAuth.currentUser?.uid)
-          .where('score', isGreaterThan: 70)
+          .where('score', isGreaterThanOrEqualTo: MasteryE.expert.mark)
           .where('numberOfPlayed', isGreaterThanOrEqualTo: 20)
           .count()
           .get()

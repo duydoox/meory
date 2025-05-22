@@ -189,13 +189,13 @@ class EntriesView extends BaseWidget<EntriesCubit, EntriesState> {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: _getScoreColor(entry.score!, theme).withOpacity(0.1),
+                      color: entry.mastery.getColor(theme).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       entry.score.toString(),
                       style: AppTextStyle.s16w600.copyWith(
-                        color: _getScoreColor(entry.score!, theme),
+                        color: entry.mastery.getColor(theme),
                       ),
                     ),
                   ),
@@ -249,12 +249,5 @@ class EntriesView extends BaseWidget<EntriesCubit, EntriesState> {
         ),
       ),
     );
-  }
-
-  Color _getScoreColor(int score, AppTheme theme) {
-    if (score < 0) return theme.colors.red;
-    if (score < 30) return theme.colors.orange;
-    if (score < 70) return theme.colors.yellow;
-    return theme.colors.green;
   }
 }

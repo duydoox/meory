@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bloc/src/change.dart';
 import 'package:core/core.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
 import 'package:meory/domain/usecases/entry/get_entries_usecase.dart';
@@ -24,6 +25,8 @@ class PlayCubit extends CoreCubit<PlayState> {
   final countPerBatch = 30;
   Timer? timerCountAdded;
   Timer? timerNext;
+  Timer? timerCountdown;
+  int countMiss = 0;
 
   EntryModel answerSelected = EntryModel();
   List<EntryModel> dataEntries = [];
@@ -74,7 +77,7 @@ class PlayCubit extends CoreCubit<PlayState> {
       AudioService().play(AudioType.wrong);
     }
     final result = await _updateEntryUseCase.execute(
-      entry: _playService.updateEntryResult(entry, isCorrect),
+      entry: _playService.updateEntryResult(currentEntry, isCorrect),
       isUpdateLastPlayedTime: true,
     );
     result.ifSuccess((data) async {
@@ -93,16 +96,29 @@ class PlayCubit extends CoreCubit<PlayState> {
     });
   }
 
-  void onTapAnswer(EntryModel entry) async {
+  void onTapAnswer(EntryModel entry, [bool isTimeout = false]) async {
+    timerCountdown?.cancel();
+    timerCountdown = null;
     answerSelected = entry;
-    emit(state.copyWith(isShowAnswer: true));
+    emit(state.copyWith(isShowAnswer: true, countdown: -1));
     updateResult(entry);
+    countMiss = isTimeout ? countMiss + 1 : 0;
     timerNext = Timer(
       const Duration(milliseconds: 1000),
       () {
+        if (isTimeout && countMiss > 5) {
+          emit(state.copyWith(isPause: true));
+          return;
+        }
         onIndexChange(state.currentIndex + 1);
       },
     );
+  }
+
+  onResume() {
+    countMiss = 0;
+    emit(state.copyWith(isPause: false));
+    onIndexChange(state.currentIndex + 1);
   }
 
   Future<void> onIndexChange(int index) async {
@@ -117,10 +133,17 @@ class PlayCubit extends CoreCubit<PlayState> {
       dataEntries,
       defaultEntry: state.entries.elementAtOrNull(index),
     );
+    final currentScore = state.entries.elementAtOrNull(index)?.score ?? 0;
+    final countdown = currentScore >= MasteryE.expert.mark
+        ? 3
+        : currentScore >= MasteryE.advanced.mark
+            ? 5
+            : -1;
     emit(state.copyWith(
       currentIndex: index,
       isShowAnswer: false,
       randomAnswers: randomAnswers,
+      countdown: countdown,
     ));
     speak();
   }
@@ -138,9 +161,35 @@ class PlayCubit extends CoreCubit<PlayState> {
   }
 
   @override
+  void onChange(Change<PlayState> change) {
+    if (change.nextState.countdown != change.currentState.countdown) {
+      if (change.nextState.countdown > 0) {
+        timerCountdown?.cancel();
+        timerCountdown = Timer(
+          const Duration(milliseconds: 1000),
+          () {
+            emit(state.copyWith(
+                countdown: change.nextState.countdown - 1,
+                isShowAnswer: change.nextState.countdown == 1));
+          },
+        );
+      } else if (change.nextState.countdown == 0) {
+        timerCountdown?.cancel();
+        timerCountdown = null;
+        onTapAnswer(EntryModel(), true);
+      } else {
+        timerCountdown?.cancel();
+        timerCountdown = null;
+      }
+    }
+    super.onChange(change);
+  }
+
+  @override
   Future<void> close() {
     timerCountAdded?.cancel();
     timerNext?.cancel();
+    timerCountdown?.cancel();
     return super.close();
   }
 }

@@ -6,6 +6,8 @@ class PlayState extends CoreState {
   final bool isShowAnswer;
   final int currentIndex;
   final int countAdded;
+  final int countdown;
+  final isPause;
   const PlayState({
     bool isLoading = false,
     String errorMessage = '',
@@ -14,6 +16,8 @@ class PlayState extends CoreState {
     this.isShowAnswer = false,
     this.currentIndex = 0,
     this.countAdded = 0,
+    this.countdown = 0,
+    this.isPause = false,
   }) : super(
           isLoading: isLoading,
           errorMessage: errorMessage,
@@ -28,6 +32,8 @@ class PlayState extends CoreState {
     bool? isShowAnswer,
     int? currentIndex,
     int? countAdded,
+    int? countdown,
+    bool? isPause,
   }) {
     return PlayState(
       isLoading: isLoading ?? this.isLoading,
@@ -37,6 +43,8 @@ class PlayState extends CoreState {
       isShowAnswer: isShowAnswer ?? this.isShowAnswer,
       currentIndex: currentIndex ?? this.currentIndex,
       countAdded: countAdded ?? this.countAdded,
+      countdown: countdown ?? this.countdown,
+      isPause: isPause ?? this.isPause,
     );
   }
 
@@ -49,5 +57,7 @@ class PlayState extends CoreState {
         isShowAnswer,
         currentIndex,
         countAdded,
+        countdown,
+        isPause,
       ];
 }

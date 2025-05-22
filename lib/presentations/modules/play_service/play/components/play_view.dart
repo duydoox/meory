@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meory/data/models/entry/entry_model.dart';
+import 'package:meory/presentations/routes.dart';
 import 'package:meory/presentations/utils/app_utils.dart';
 import 'package:meory/presentations/widgets/base_widget.dart';
 import 'package:meory/presentations/widgets/button_widget/primary_button.dart';
@@ -37,7 +40,7 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
                 Icon(Icons.emoji_events, color: theme.colors.primary),
                 const SizedBox(width: 8),
                 Text(
-                  'Score: ',
+                  'Score',
                   style: AppTextStyle.s16w600.copyWith(color: theme.colors.primary),
                 ),
               ],
@@ -45,30 +48,145 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            if (cubit.state.isLoading)
-              const SizedBox()
-            else if (cubit.state.entries.length < 4)
-              _buildEmptyState(cubit, theme)
-            else ...[
-              _buildProgressIndicator(cubit, theme),
-              Expanded(
-                child: Column(
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
+                if (cubit.state.isLoading)
+                  const SizedBox()
+                else if (cubit.state.entries.length < 4)
+                  _buildEmptyState(cubit, theme)
+                else ...[
+                  _buildProgressIndicator(cubit, theme),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        const Spacer(flex: 2),
+                        _buildQuestionCard(currentEntry, theme),
+                        const Spacer(flex: 1),
+                        _buildCountdown(cubit.state.countdown, theme),
+                        const Spacer(flex: 2),
+                        _buildSpeakButton(cubit, theme),
+                        const SizedBox(height: 8),
+                        _buildAnswerOptions(cubit, currentEntry, theme, context),
+                        const SizedBox(height: 24),
+                      ],
+                    ),
+                  ),
+                ]
+              ],
+            ),
+          ),
+          if (cubit.state.isPause) _buildPauseOverlay(cubit, theme),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPauseOverlay(PlayCubit cubit, AppTheme theme) {
+    return Container(
+      color: Colors.black.withOpacity(0.7),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Center(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 32),
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: theme.colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colors.primary.withOpacity(0.2),
+                  blurRadius: 16,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.pause_circle_outline,
+                  size: 64,
+                  color: theme.colors.primary,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Tạm dừng',
+                  style: AppTextStyle.s24w600.copyWith(
+                    color: theme.colors.primary,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Bạn có muốn tiếp tục?',
+                  style: AppTextStyle.s16w400.copyWith(
+                    color: theme.colors.greyText,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Spacer(flex: 1),
-                    _buildQuestionCard(currentEntry, theme),
-                    const Spacer(flex: 2),
-                    _buildSpeakButton(cubit, theme),
-                    const SizedBox(height: 8),
-                    _buildAnswerOptions(cubit, currentEntry, theme, context),
-                    const SizedBox(height: 24),
+                    GestureDetector(
+                      onTap: AppNavigator.pop,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: theme.colors.red.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          'Thoát',
+                          style: AppTextStyle.s16w500.copyWith(
+                            color: theme.colors.red,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    GestureDetector(
+                      onTap: cubit.onResume,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              theme.colors.primary,
+                              theme.colors.primary.withOpacity(0.8),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: theme.colors.primary.withOpacity(0.3),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          'Tiếp tục',
+                          style: AppTextStyle.s16w500.copyWith(
+                            color: theme.colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ]
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -182,7 +300,7 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
               ),
             ),
           ],
-          if (currentEntry?.example != null && currentEntry!.score! < 75) ...[
+          if (currentEntry?.example != null && currentEntry!.score! < MasteryE.expert.mark) ...[
             const SizedBox(height: 16),
             TextHighlight(
               text: '"${currentEntry.example}"',
@@ -299,6 +417,70 @@ class PlayView extends BaseWidget<PlayCubit, PlayState> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildCountdown(int countdown, AppTheme theme) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 1.0, end: 0.0),
+      duration: const Duration(seconds: 1),
+      key: ValueKey(countdown),
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: countdown > 0 ? 1 : 0,
+          child: Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: theme.colors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colors.primary.withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                CircularProgressIndicator(
+                  value: value,
+                  strokeWidth: 4,
+                  backgroundColor: theme.colors.primary.withOpacity(0.1),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    countdown <= 2 ? theme.colors.red.withOpacity(0.5) : theme.colors.primary,
+                  ),
+                ),
+                Center(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (Widget child, Animation<double> animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: Text(
+                      '$countdown',
+                      key: ValueKey(countdown),
+                      style: AppTextStyle.s24w600.copyWith(
+                        color: countdown <= 2
+                            ? theme.colors.red.withOpacity(0.5)
+                            : theme.colors.primary,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

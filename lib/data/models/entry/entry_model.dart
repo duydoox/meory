@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:core/core.dart';
+import 'package:flutter/material.dart';
 import 'package:meory/presentations/utils/app_utils.dart';
 
 class EntryModel {
@@ -37,6 +39,13 @@ class EntryModel {
     this.score = 0,
     Timestamp? createdAt,
   }) : createdAt = createdAt ?? Timestamp.now();
+
+  MasteryE get mastery {
+    if (score == null) {
+      return MasteryE.novice;
+    }
+    return MasteryE.fromScore(score!);
+  }
 
   factory EntryModel.fromJson(Map<String, dynamic> json) {
     return EntryModel(
@@ -164,4 +173,44 @@ enum PartsOfSpeechE {
 
   const PartsOfSpeechE(this.short);
   final String short;
+}
+
+enum MasteryE {
+  novice(-1000),
+  intermediate(1),
+  advanced(40),
+  expert(70),
+  master(90);
+
+  const MasteryE(this.mark);
+
+  final int mark;
+
+  static MasteryE fromScore(int score) {
+    if (score >= MasteryE.master.mark) {
+      return MasteryE.master;
+    } else if (score >= MasteryE.expert.mark) {
+      return MasteryE.expert;
+    } else if (score >= MasteryE.advanced.mark) {
+      return MasteryE.advanced;
+    } else if (score >= MasteryE.intermediate.mark) {
+      return MasteryE.intermediate;
+    }
+    return MasteryE.novice;
+  }
+
+  Color getColor(AppTheme theme) {
+    switch (this) {
+      case MasteryE.novice:
+        return theme.colors.red;
+      case MasteryE.intermediate:
+        return theme.colors.orange;
+      case MasteryE.advanced:
+        return theme.colors.yellow;
+      case MasteryE.expert:
+        return theme.colors.green;
+      case MasteryE.master:
+        return theme.colors.green;
+    }
+  }
 }
