@@ -7,7 +7,7 @@ class PlayState extends CoreState {
   final int currentIndex;
   final int countAdded;
   final int countdown;
-  final isPause;
+  final bool isPause;
   const PlayState({
     bool isLoading = false,
     String errorMessage = '',

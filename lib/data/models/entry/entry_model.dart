@@ -52,8 +52,7 @@ class EntryModel {
       id: json['id'],
       headword: json['headword'],
       definition: json['definition'],
-      partsOfSpeech:
-          json['partsOfSpeech'] != null ? PartsOfSpeechE.values[json['partsOfSpeech']] : null,
+      partsOfSpeech: _getPartsOfSpeechFromValueOrIndex(json['partsOfSpeech']),
       pronunciation: json['pronunciation'],
       category: json['category'],
       example: json['example'],
@@ -67,6 +66,19 @@ class EntryModel {
       lastPlayedResult: json['lastPlayedResult'],
       score: json['score'],
     );
+  }
+
+  static PartsOfSpeechE? _getPartsOfSpeechFromValueOrIndex(dynamic partsOfSpeech) {
+    if (partsOfSpeech == null) {
+      return null;
+    } else if (partsOfSpeech is int &&
+        partsOfSpeech >= 0 &&
+        partsOfSpeech < PartsOfSpeechE.values.length) {
+      return PartsOfSpeechE.values[partsOfSpeech];
+    } else if (partsOfSpeech is String) {
+      return PartsOfSpeechE.values.where((e) => e.name == partsOfSpeech).firstOrNull;
+    }
+    return null;
   }
 
   Map<String, dynamic> toJson() {
