@@ -121,7 +121,7 @@ class ChartPainter extends CustomPainter {
       chartWidth,
       chartHeight,
       scale,
-      theme.colors.blueText,
+      theme.colors.success,
     );
 
     // Draw legend
@@ -296,7 +296,7 @@ class ChartPainter extends CustomPainter {
       canvas,
       Offset(padding + 80, padding - 20),
       'Đã đúng',
-      theme.colors.blueText,
+      theme.colors.success,
       textStyle,
     );
   }

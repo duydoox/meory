@@ -18,6 +18,7 @@ class AppColors {
   final Color greenEnable;
   final Color orange;
   final Color yellow;
+  final Color success;
 
   /// Text ---
   final Color whiteText;
@@ -65,6 +66,7 @@ class AppColors {
     required this.greenEnable,
     required this.orange,
     required this.yellow,
+    required this.success,
   });
 
   factory AppColors.light() {
@@ -95,6 +97,7 @@ class AppColors {
       greenEnable: Color(0xff0CE39D),
       orange: Color(0xffFFA500),
       yellow: Color(0xffF7F800),
+      success: Color(0xff00BFFF), // Example success color
     );
   }
   factory AppColors.blueLight() {
@@ -125,6 +128,7 @@ class AppColors {
       greenEnable: Color(0xff0CE39D),
       orange: Color(0xffFFA500),
       yellow: Color(0xffF7F800),
+      success: Color(0xffD66DD3),
     );
   }
   factory AppColors.dark() {
@@ -155,6 +159,7 @@ class AppColors {
       greenEnable: Color(0xff0CE39D),
       orange: Color(0xffFFA500),
       yellow: Color(0xffF7F800),
+      success: Color(0xffD35400),
     );
   }
 }

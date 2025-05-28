@@ -117,7 +117,7 @@ class CreateEntryView extends BaseWidget<CreateEntryCubit, CreateEntryState> {
                   onTap: cubit.onTapSubmit,
                   title: cubit.isEdit ? 'Lưu thay đổi' : 'Thêm từ mới',
                   width: double.infinity,
-                  height: 52,
+                  height: 48,
                 ),
               ],
             ),
