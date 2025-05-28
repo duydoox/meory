@@ -36,6 +36,30 @@ class AppTheme {
     );
   }
 
+  // Blue Light theme
+  static ThemeData blueLight() {
+    final baseTheme = ThemeData(
+      appBarTheme: AppBarTheme(
+        backgroundColor: AppColors.blueLight().background,
+      ),
+      brightness: Brightness.light,
+      useMaterial3: true,
+      colorSchemeSeed: AppColors.blueLight().primary,
+      scaffoldBackgroundColor: AppColors.blueLight().background,
+      dialogTheme: DialogTheme(
+        backgroundColor: AppColors.blueLight().white,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+    );
+
+    return baseTheme.copyWith(
+      textTheme: GoogleFonts.beVietnamProTextTheme(baseTheme.textTheme),
+    );
+  }
+
   // Dark theme
   static ThemeData dark() {
     final baseTheme = ThemeData(
@@ -69,9 +93,11 @@ class AppTheme {
       case AppThemeMode.light:
         return AppColors.light();
       case AppThemeMode.dark:
-        return AppColors.light();
+        return AppColors.dark();
+      case AppThemeMode.blueLight:
+        return AppColors.blueLight();
     }
   }
 }
 
-enum AppThemeMode { light, dark }
+enum AppThemeMode { light, dark, blueLight }

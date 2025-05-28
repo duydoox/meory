@@ -3,6 +3,7 @@ part of '../core.dart';
 class AppSP {
   static const String environment = 'environment';
   static const String languageLocale = 'languageLocale';
+  static const String themeMode = 'themeMode';
   static const String hasRunBefore = 'hasRunBefore';
   static const String userId = 'userId';
 

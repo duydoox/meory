@@ -285,7 +285,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
       child: PrimaryButton(
         title: 'Start Quiz',
         onTap: () => AppNavigator.push(Routes.play),
-        height: 56,
+        height: 48,
         icon: Icon(Icons.play_arrow_rounded, color: theme.colors.white),
       ),
     );

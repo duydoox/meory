@@ -20,11 +20,22 @@ class AppCubit extends Cubit<AppState> with SuperAppConn {
 
   void init(BuildContext context) async {
     await getLanguage();
+    await initTheme();
     // WidgetUtils.configLoading(AppImages.icFullLogoWhite.assetName);
   }
 
+  Future<void> initTheme() async {
+    var themeMode = await AppSP.get(AppSP.themeMode);
+    if (themeMode == null) {
+      changeThemeMode(AppThemeMode.dark);
+    } else {
+      changeThemeMode(AppThemeMode.values.byName(themeMode));
+    }
+  }
+
   void changeThemeMode(AppThemeMode themeMode) {
-    emit(state.copyWith(themeMode: themeMode));
+    emit(state.copyWith(theme: AppTheme(themeMode), themeMode: themeMode));
+    AppSP.set(AppSP.themeMode, themeMode.name);
   }
 
   void switchThemeMode() {

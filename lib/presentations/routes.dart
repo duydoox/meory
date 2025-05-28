@@ -13,6 +13,7 @@ import 'package:meory/presentations/modules/entry_service/entries/entries_screen
 import 'package:meory/presentations/modules/entry_service/entry_detail/entry_detail_screen.dart';
 import 'package:meory/presentations/modules/home/home_screen.dart';
 import 'package:meory/presentations/modules/play_service/play/play_screen.dart';
+import 'package:meory/presentations/modules/setting/setting_screen.dart';
 import 'package:meory/presentations/modules/splash/splash_screen.dart';
 
 enum Routes {
@@ -35,6 +36,9 @@ enum Routes {
 
   //play
   play('/play'),
+
+  // setting
+  setting('/setting'),
   ;
 
   final String path;
@@ -136,6 +140,15 @@ final class _RouteConfig {
       path: Routes.play.path,
       pageBuilder: (context, state) => getPage(
         page: const PlayScreen(),
+        state: state,
+      ),
+    ),
+
+    // setting
+    GoRoute(
+      path: Routes.setting.path,
+      pageBuilder: (context, state) => getPage(
+        page: const SettingScreen(),
         state: state,
       ),
     ),

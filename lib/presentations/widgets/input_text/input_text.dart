@@ -129,6 +129,7 @@ class _InputTextState extends State<InputText> {
                   textInputAction: widget.textInputAction,
                   onSubmitted: widget.onSubmitted,
                   autofocus: widget.autofocus,
+                  cursorColor: theme.colors.primary.withOpacity(0.8),
                   onTapOutside: (val) {
                     _focusNode.unfocus();
                   },

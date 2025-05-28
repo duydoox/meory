@@ -97,6 +97,36 @@ class AppColors {
       yellow: Color(0xffF7F800),
     );
   }
+  factory AppColors.blueLight() {
+    return const AppColors(
+      background: Color(0xffffffff),
+      white: Color(0xffffffff),
+      black: Colors.black,
+      whiteText: Color(0xffffffff),
+      blackText: Colors.black,
+      primary: Color(0xff00BFFF),
+      primaryText: Color(0xff00BFFF),
+      secondaryText: Color(0xffffffff),
+      greyText: Color(0xff9E9E9E),
+      border: Color(0xffEEEEEE),
+      divider: Color(0xffCDCDCD),
+      grey: Colors.grey,
+      greyBackground: Color(0xffF8F8F8),
+      greyBackground2: Color(0xffE4E4E4),
+      inputBackground: Color(0xffF2F2F2),
+      blueText: Colors.blue,
+      red: Color(0xffF84646),
+      green: Colors.green,
+      greenText: Colors.green,
+      blueBackground: Color(0xffDEF2FF),
+      alertBackground: Color(0xff424242),
+      hintText: Color(0xff888888),
+      brown: Color(0xffB7A1A1),
+      greenEnable: Color(0xff0CE39D),
+      orange: Color(0xffFFA500),
+      yellow: Color(0xffF7F800),
+    );
+  }
   factory AppColors.dark() {
     return const AppColors(
       background: Color(0xffffffff),
@@ -104,8 +134,8 @@ class AppColors {
       black: Colors.black,
       whiteText: Color(0xffffffff),
       blackText: Colors.black,
-      primary: Color(0xffD66DD3),
-      primaryText: Color(0xffD66DD3),
+      primary: Color(0xff333333),
+      primaryText: Color(0xff2E2E2E),
       secondaryText: Color(0xffffffff),
       greyText: Color(0xff9E9E9E),
       border: Color(0xffEEEEEE),

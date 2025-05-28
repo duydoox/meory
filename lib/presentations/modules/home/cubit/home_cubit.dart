@@ -76,6 +76,16 @@ class HomeCubit extends CoreCubit<HomeState> {
                 ListTile(
                   titleAlignment: ListTileTitleAlignment.center,
                   title: Text(
+                    tr.setting,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.s16w600.withColor(theme.colors.blackText),
+                  ),
+                  onTap: onTapSetting,
+                ),
+                Divider(color: theme.colors.divider, height: 1),
+                ListTile(
+                  titleAlignment: ListTileTitleAlignment.center,
+                  title: Text(
                     tr.logOut,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.s16w600.withColor(theme.colors.red),
@@ -94,6 +104,10 @@ class HomeCubit extends CoreCubit<HomeState> {
         );
       },
     );
+  }
+
+  onTapSetting() {
+    AppNavigator.push(Routes.setting);
   }
 
   onTapLogout() {

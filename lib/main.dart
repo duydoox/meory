@@ -78,9 +78,13 @@ class _AppMobileState extends State<AppMobile> {
             scaffoldMessengerKey: AppNavigator.scaffoldMessengerKey,
             color: colors.white,
             title: '',
-            theme: AppTheme.light(),
+            theme:
+                state.themeMode == AppThemeMode.blueLight ? AppTheme.blueLight() : AppTheme.light(),
             darkTheme: AppTheme.dark(),
-            themeMode: state.themeMode == AppThemeMode.light ? ThemeMode.light : ThemeMode.dark,
+            themeMode:
+                state.themeMode == AppThemeMode.light || state.themeMode == AppThemeMode.blueLight
+                    ? ThemeMode.light
+                    : ThemeMode.dark,
             debugShowCheckedModeBanner: false,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
