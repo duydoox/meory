@@ -286,7 +286,7 @@ class ChartPainter extends CustomPainter {
     _drawLegendItem(
       canvas,
       Offset(padding, padding - 20),
-      'Played',
+      'Đã chơi',
       theme.colors.primary,
       textStyle,
     );
@@ -295,7 +295,7 @@ class ChartPainter extends CustomPainter {
     _drawLegendItem(
       canvas,
       Offset(padding + 80, padding - 20),
-      'Success',
+      'Đã đúng',
       theme.colors.blueText,
       textStyle,
     );

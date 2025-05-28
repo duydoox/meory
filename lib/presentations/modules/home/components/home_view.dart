@@ -46,7 +46,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
                     if (cubit.state.listStatisticalByDay.isNotEmpty) ...[
                       const SizedBox(height: 24),
                       Text(
-                        'Statistical',
+                        'Thống kê',
                         style: AppTextStyle.s18w600.copyWith(color: theme.colors.primaryText),
                       ),
                       StatisticChart(listStatisticalByDay: cubit.state.listStatisticalByDay),
@@ -88,7 +88,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Welcome back,",
+                "Xin chào,",
                 style: AppTextStyle.s14w400.copyWith(color: theme.colors.greyText),
               ),
               Text(
@@ -142,10 +142,10 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildStatItem(
-                  'Words', cubit.state.homeData.totalEntries.toString(), Icons.book, theme),
-              _buildStatItem('Mastered', cubit.state.homeData.masteredEntries.toString(),
+                  'Từ vựng', cubit.state.homeData.totalEntries.toString(), Icons.book, theme),
+              _buildStatItem('Thành thạo', cubit.state.homeData.masteredEntries.toString(),
                   Icons.psychology, theme),
-              _buildStatItem('Streak', cubit.state.statisticalModel.streak?.toString() ?? '0',
+              _buildStatItem('Chuỗi', cubit.state.statisticalModel.streak?.toString() ?? '0',
                   Icons.local_fire_department, theme),
             ],
           ),
@@ -160,14 +160,14 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildStatItem(
-                'Total Plays',
+                'Đã chơi',
                 stats.numberOfPlayed?.toString() ?? '0',
                 Icons.sports_esports,
                 theme,
                 small: true,
               ),
               _buildStatItem(
-                'Success Rate',
+                'Tỷ lệ đúng',
                 '$successRate%',
                 Icons.analytics,
                 theme,
@@ -205,7 +205,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Quick Actions',
+          'Thư viện từ',
           style: AppTextStyle.s18w600.copyWith(color: theme.colors.primaryText),
         ),
         const SizedBox(height: 16),
@@ -213,7 +213,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
           children: [
             Expanded(
               child: _buildActionCard(
-                'Add Word',
+                'Thêm mới',
                 Icons.add_circle_outline,
                 theme,
                 () => AppNavigator.push(Routes.createEntry),
@@ -222,7 +222,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
             const SizedBox(width: 16),
             Expanded(
               child: _buildActionCard(
-                'Review',
+                'Thư viện',
                 Icons.list_alt,
                 theme,
                 () => AppNavigator.push(Routes.entries),
@@ -283,7 +283,7 @@ class HomeView extends BaseWidget<HomeCubit, HomeState> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       width: double.infinity,
       child: PrimaryButton(
-        title: 'Start Quiz',
+        title: 'Chơi ngay',
         onTap: () => AppNavigator.push(Routes.play),
         height: 48,
         icon: Icon(Icons.play_arrow_rounded, color: theme.colors.white),

@@ -44,7 +44,7 @@ class AuthView extends BaseWidget {
                 height: 29,
               ),
               Text(
-                'Let’s sign in',
+                'Đăng nhập',
                 style: AppTextStyle.s40w700,
               ),
               const SizedBox(
@@ -52,7 +52,7 @@ class AuthView extends BaseWidget {
               ),
               CustomButton(
                 icon: AppIcon.icGoogle(),
-                title: "Continue with google",
+                title: "Đăng nhập với Google",
                 onTap: cubit.onTapSignInWithGoogle,
               ),
             ],

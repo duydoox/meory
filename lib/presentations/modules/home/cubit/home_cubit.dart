@@ -76,7 +76,7 @@ class HomeCubit extends CoreCubit<HomeState> {
                 ListTile(
                   titleAlignment: ListTileTitleAlignment.center,
                   title: Text(
-                    tr.setting,
+                    'Cài đặt',
                     textAlign: TextAlign.center,
                     style: AppTextStyle.s16w600.withColor(theme.colors.blackText),
                   ),
@@ -86,14 +86,14 @@ class HomeCubit extends CoreCubit<HomeState> {
                 ListTile(
                   titleAlignment: ListTileTitleAlignment.center,
                   title: Text(
-                    tr.logOut,
+                    'Đăng xuất',
                     textAlign: TextAlign.center,
                     style: AppTextStyle.s16w600.withColor(theme.colors.red),
                   ),
                   onTap: onTapLogout,
                 ),
                 PrimaryButton(
-                  title: tr.close,
+                  title: 'Đóng',
                   onTap: () {
                     AppNavigator.pop();
                   },
