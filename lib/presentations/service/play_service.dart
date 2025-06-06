@@ -90,7 +90,9 @@ class PlayService {
     final now = DateTime.now();
     final lastPlayed =
         entry.lastPlayedTime?.toDate() ?? DateTime.now().add(const Duration(days: -100));
-    final daysSinceLastPlayed = now.difference(lastPlayed).inMinutes / 60 / 60 / 24;
+
+    // Số giờ đã chơi kể từ lần chơi gần nhất
+    final hoursSinceLastPlayed = now.difference(lastPlayed).inMinutes / 60 / 60;
 
     // Tỉ lệ chơi sai
     double failureRate = 1.0;
@@ -101,15 +103,23 @@ class PlayService {
     }
 
     // Các trọng số:
-    const weightScore = 0.5; // Trọng số cho điểm số (0 - 100 điểm)
-    const weightLastPlayed = 0.4; // Trọng số cho thời gian đã chơi gần nhất đến hiện tại (ngày)
-    const weightPlayedTimes = 0.05; // Trọng số cho số lần đã chơi (lần)
-    const weightFailureRate = 0.05; // Trọng số cho tỉ lệ chơi sai (%)
+    const weightScore = 50; // Trọng số cho điểm số (-100 -> 100 điểm)
+    const weightLastPlayed = 3; // Trọng số cho thời gian đã chơi gần nhất đến hiện tại (giờ)
+    const weightPlayedTimes = 5; // Trọng số cho số lần đã chơi (lần)
+    const weightFailureRate = 5; // Trọng số cho tỉ lệ chơi sai (%)
 
-    final importanceScore = (100 - (entry.score ?? 0)) * weightScore +
-        (daysSinceLastPlayed) * weightLastPlayed +
-        (100 - (entry.numberOfPlayed ?? 0)).clamp(-100, 100) * weightPlayedTimes +
-        (failureRate * 100) * weightFailureRate;
+    // các input
+    final int inputScore = (100 - (entry.score ?? 0)).clamp(-100, 100);
+    final double inputSinceLastPlayed = hoursSinceLastPlayed <= 0.1
+        ? -100 * (1 - (hoursSinceLastPlayed) / 0.1)
+        : hoursSinceLastPlayed; // Giả sử 0.1 giờ = 6 phút, nếu đã chơi trong 6 phút thì sẽ trừ điểm
+    final int inputPlayedTimes = (100 - (entry.numberOfPlayed ?? 0)).clamp(-100, 100);
+    final double inputFailureRate = failureRate * 100;
+
+    final importanceScore = inputScore * weightScore +
+        inputSinceLastPlayed * weightLastPlayed +
+        inputPlayedTimes * weightPlayedTimes +
+        inputFailureRate * weightFailureRate;
 
     return importanceScore;
   }
