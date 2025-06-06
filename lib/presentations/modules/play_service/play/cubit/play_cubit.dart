@@ -126,7 +126,7 @@ class PlayCubit extends CoreCubit<PlayState> {
       Toast.showInfo("End");
       return;
     }
-    if (index > state.entries.length - 3 && state.entries.length > 3) {
+    if (index > state.entries.length - 2 && state.entries.length > 3) {
       getEntries(false);
     }
     final randomAnswers = await _playService.getRandomEntry(
