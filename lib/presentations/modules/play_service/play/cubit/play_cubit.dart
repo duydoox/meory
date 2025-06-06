@@ -27,12 +27,13 @@ class PlayCubit extends CoreCubit<PlayState> {
   Timer? timerNext;
   Timer? timerCountdown;
   int countMiss = 0;
+  bool stopped = true;
 
   EntryModel answerSelected = EntryModel();
   List<EntryModel> dataEntries = [];
 
-  Future<void> getEntries([bool reset = true]) async {
-    emit(state.copyWith(isLoading: reset, errorMessage: ''));
+  Future<void> getEntries() async {
+    emit(state.copyWith(isLoading: stopped, errorMessage: ''));
     final result = await _getEntriesUseCase.execute(limit: 500);
     result.ifSuccess(
       (data) {
@@ -40,7 +41,7 @@ class PlayCubit extends CoreCubit<PlayState> {
         final entries = _playService.getTopImportantEntries(data ?? [], take: countPerBatch);
         emit(state.copyWith(
           isLoading: false,
-          entries: reset ? entries : [...state.entries, ...entries],
+          entries: [...state.entries, ...entries],
           countAdded: entries.length,
         ));
         timerCountAdded?.cancel();
@@ -50,8 +51,8 @@ class PlayCubit extends CoreCubit<PlayState> {
             emit(state.copyWith(countAdded: 0));
           },
         );
-        if (reset) {
-          onIndexChange(0);
+        if (stopped) {
+          nextIndex();
         }
       },
     );
@@ -96,7 +97,11 @@ class PlayCubit extends CoreCubit<PlayState> {
     });
   }
 
-  void onTapAnswer(EntryModel entry, [bool isTimeout = false]) async {
+  void onTapAnswer(EntryModel entry) async {
+    await submit(entry);
+  }
+
+  Future<void> submit(EntryModel entry, [bool isTimeout = false]) async {
     timerCountdown?.cancel();
     timerCountdown = null;
     answerSelected = entry;
@@ -110,7 +115,7 @@ class PlayCubit extends CoreCubit<PlayState> {
           emit(state.copyWith(isPause: true));
           return;
         }
-        onIndexChange(state.currentIndex + 1);
+        nextIndex();
       },
     );
   }
@@ -118,16 +123,18 @@ class PlayCubit extends CoreCubit<PlayState> {
   onResume() {
     countMiss = 0;
     emit(state.copyWith(isPause: false));
-    onIndexChange(state.currentIndex + 1);
+    nextIndex();
   }
 
-  Future<void> onIndexChange(int index) async {
+  Future<void> nextIndex() async {
+    final index = state.currentIndex + 1;
     if (index >= state.entries.length) {
-      Toast.showInfo("End");
+      stopped = true;
       return;
     }
+    stopped = false;
     if (index > state.entries.length - 2 && state.entries.length > 3) {
-      getEntries(false);
+      getEntries();
     }
     final randomAnswers = await _playService.getRandomEntry(
       dataEntries,
@@ -176,7 +183,7 @@ class PlayCubit extends CoreCubit<PlayState> {
       } else if (change.nextState.countdown == 0) {
         timerCountdown?.cancel();
         timerCountdown = null;
-        onTapAnswer(EntryModel(), true);
+        submit(EntryModel(), true);
       } else {
         timerCountdown?.cancel();
         timerCountdown = null;

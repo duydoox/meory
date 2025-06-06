@@ -14,7 +14,7 @@ class PlayState extends CoreState {
     this.entries = const [],
     this.randomAnswers = const [],
     this.isShowAnswer = false,
-    this.currentIndex = 0,
+    this.currentIndex = -1,
     this.countAdded = 0,
     this.countdown = 0,
     this.isPause = false,
