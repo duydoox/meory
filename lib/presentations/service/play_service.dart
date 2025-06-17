@@ -111,7 +111,7 @@ class PlayService {
     // các input
     final int inputScore = (100 - (entry.score ?? 0)).clamp(-100, 100);
     final double inputSinceLastPlayed = hoursSinceLastPlayed <= 0.1
-        ? -100 * (1 - (hoursSinceLastPlayed) / 0.1)
+        ? -240 * (1 - (hoursSinceLastPlayed) / 0.1)
         : hoursSinceLastPlayed; // Giả sử 0.1 giờ = 6 phút, nếu đã chơi trong 6 phút thì sẽ trừ điểm
     final int inputPlayedTimes = (100 - (entry.numberOfPlayed ?? 0)).clamp(-100, 100);
     final double inputFailureRate = failureRate * 100;
