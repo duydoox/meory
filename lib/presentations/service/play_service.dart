@@ -92,7 +92,7 @@ class PlayService {
         entry.lastPlayedTime?.toDate() ?? DateTime.now().add(const Duration(days: -100));
 
     // Số giờ đã chơi kể từ lần chơi gần nhất
-    final hoursSinceLastPlayed = now.difference(lastPlayed).inMinutes / 60 / 60;
+    final hoursSinceLastPlayed = now.difference(lastPlayed).inSeconds / 60 / 60;
 
     // Tỉ lệ chơi sai
     double failureRate = 1.0;
